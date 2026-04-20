@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PeminjamanController;
 
 Route::get('/test', function () {
     return 'OK';
@@ -27,9 +28,10 @@ Route::post('/employees', [EmployeeController::class, 'store'])->middleware('aut
 
 Route::resource('/inventaris', ItemController::class)->middleware('auth');
 
-Route::get('/peminjaman', function () {
-    return view('peminjaman.index');
-})->middleware('auth');
+Route::resource('/peminjaman', PeminjamanController::class)->middleware('auth');
+Route::post('/peminjaman/{id}/kembalikan', [PeminjamanController::class, 'kembalikan'])
+    ->name('peminjaman.kembalikan')
+    ->middleware('auth');
 
 Route::get('/', function () {
     return redirect('/employees');
