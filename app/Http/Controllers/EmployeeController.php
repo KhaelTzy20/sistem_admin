@@ -33,53 +33,50 @@ class EmployeeController extends Controller
     ];
 
     public function index(Request $request)
-{
-    $query = Employee::query();
+    {
+        $query = Employee::query();
 
-    if ($request->search) {
-        $search = strtolower($request->search);
+        if ($search = $request->search) {
 
-        $query->where(function ($q) use ($search) {
+            $query->where(function ($q) use ($search) {
 
-            // ID (No)
-            if (is_numeric($search)) {
-                $q->orWhere('id', $search);
-            }
-
-            // Nama
-            $q->orWhereRaw("LOWER(first_name) LIKE ?", ["%$search%"])
-              ->orWhereRaw("LOWER(last_name) LIKE ?", ["%$search%"]);
-
-            // KTP
-            $q->orWhere('id_number', 'like', "%$search%");
-
-            // Tanggal masuk
-            $q->orWhere('start_work_date', 'like', "%$search%");
-
-            // DIVISI (mapping manual)
-            foreach ($this->divisions as $key => $value) {
-                if (str_contains(strtolower($value), $search)) {
-                    $q->orWhere('division_id', $key);
+                if (is_numeric($search)) {
+                    $q->orWhere('id', $search)
+                        ->orWhere('id_number', 'like', "$search%");
                 }
+
+                $q->orWhere('first_name', 'like', "$search%")
+                    ->orWhere('last_name', 'like', "$search%")
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["$search%"]);
+            });
+
+            // filter divisi
+            $divisionIds = collect($this->divisions)
+                ->filter(fn($v) => str_contains(strtolower($v), strtolower($search)))
+                ->keys();
+
+            if ($divisionIds->isNotEmpty()) {
+                $query->orWhereIn('division_id', $divisionIds);
             }
 
-            // STATUS KERJA (mapping manual)
-            foreach ($this->workStatuses as $key => $value) {
-                if (str_contains(strtolower($value), $search)) {
-                    $q->orWhere('work_status', $key);
-                }
+            // filter status
+            $statusIds = collect($this->workStatuses)
+                ->filter(fn($v) => str_contains(strtolower($v), strtolower($search)))
+                ->keys();
+
+            if ($statusIds->isNotEmpty()) {
+                $query->orWhereIn('work_status', $statusIds);
             }
-        });
+        }
+
+        $employees = $query->latest()->paginate(10);
+
+        return view('employees.index', [
+            'employees' => $employees,
+            'divisions' => $this->divisions,
+            'workStatuses' => $this->workStatuses
+        ]);
     }
-
-    $employees = $query->latest()->paginate(10);
-
-    return view('employees.index', [
-        'employees' => $employees,
-        'divisions' => $this->divisions,
-        'workStatuses' => $this->workStatuses
-    ]);
-}
 
     public function create()
     {
