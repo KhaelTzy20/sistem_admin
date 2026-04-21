@@ -4,18 +4,12 @@
 @section('content')
 
 <style>
-    .custom-container {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
     .search-box {
         margin-bottom: 15px;
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+        align-items: center;
     }
 
     input, select {
@@ -122,125 +116,126 @@
         color: #aaa;
         background: #f5f5f5;
     }
+
+    .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
 </style>
 
-<div class="container">
-    <div class="custom-container">
+<div class="header-bar">
+    <h3>📦 Data Peminjaman</h3>
 
-        <h3>📦 Data Peminjaman</h3>
+    <a href="/peminjaman/create" class="btn-add">
+        + Pinjam Barang
+    </a>
+</div>
 
-        {{-- SEARCH --}}
-        <form method="GET" class="search-box">
+<form method="GET" class="search-box">
 
-            <input type="text" name="search"
-                value="{{ request('search') }}"
-                placeholder="Cari barang / peminjam...">
+    <input type="text" name="search"
+        value="{{ request('search') }}"
+        placeholder="Cari barang / peminjam...">
 
-            <select name="status">
-                <option value="">Semua Status</option>
-                <option value="dipinjam" {{ request('status')=='dipinjam'?'selected':'' }}>
-                    Dipinjam
-                </option>
-                <option value="dikembalikan" {{ request('status')=='dikembalikan'?'selected':'' }}>
-                    Dikembalikan
-                </option>
-            </select>
+    <select name="status">
+        <option value="">Semua Status</option>
+        <option value="dipinjam" {{ request('status')=='dipinjam'?'selected':'' }}>
+            Dipinjam
+        </option>
+        <option value="dikembalikan" {{ request('status')=='dikembalikan'?'selected':'' }}>
+            Dikembalikan
+        </option>
+    </select>
 
-            <button type="submit">Cari</button>
+    <button type="submit">Cari</button>
 
-            @if(request('search') || request('status'))
-                <a href="/peminjaman" class="btn-add" style="background:#7f8c8d;">Reset</a>
-            @endif
+    @if(request('search') || request('status'))
+        <a href="/peminjaman" class="btn-add" style="background:#7f8c8d;">
+            Reset
+        </a>
+    @endif
 
-        </form>
+</form>
 
-        <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
-            <a href="/peminjaman/create" class="btn-add">+ Pinjam Barang</a>
-        </div>
-
-        {{-- NOTIF --}}
-        @if(session('success'))
-            <div style="background:#d4edda; padding:10px; border-radius:6px; margin-bottom:10px;">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        {{-- TABLE --}}
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Barang</th>
-                        <th>Peminjam</th>
-                        <th>Tanggal Pinjam</th>
-                        <th>Tanggal Kembali</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach($peminjaman as $p)
-                        <tr>
-                            <td>{{ $p->item->name ?? '-' }}</td>
-                            <td>{{ $p->employee->full_name ?? '-' }}</td>
-                            <td>{{ $p->tanggal_pinjam }}</td>
-                            <td>{{ $p->tanggal_kembali ?? '-' }}</td>
-
-                            <td>
-                                <span class="status {{ $p->status }}">
-                                    {{ ucfirst($p->status) }}
-                                </span>
-                            </td>
-
-                            <td>
-                                @if($p->status == 'dipinjam')
-                                    <form action="{{ route('peminjaman.kembalikan', $p->id) }}" method="POST">
-                                        @csrf
-                                        <button onclick="return confirm('Yakin kembalikan?')"
-                                            style="background:#27ae60;">
-                                            Kembalikan
-                                        </button>
-                                    </form>
-                                @else
-                                    <span style="color:#aaa;">Selesai</span>
-                                @endif
-                            </td>
-
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        {{-- PAGINATION --}}
-        <div class="custom-pagination">
-
-            @if ($peminjaman->onFirstPage())
-                <span class="disabled">← Prev</span>
-            @else
-                <a href="{{ $peminjaman->previousPageUrl() }}">← Prev</a>
-            @endif
-
-            @for ($i = 1; $i <= $peminjaman->lastPage(); $i++)
-                @if ($i == $peminjaman->currentPage())
-                    <span class="active">{{ $i }}</span>
-                @elseif ($i <= 3 || $i > $peminjaman->lastPage() - 2 || abs($i - $peminjaman->currentPage()) <= 1)
-                    <a href="{{ $peminjaman->url($i) }}">{{ $i }}</a>
-                @elseif ($i == 4 || $i == $peminjaman->lastPage() - 2)
-                    <span>...</span>
-                @endif
-            @endfor
-
-            @if ($peminjaman->hasMorePages())
-                <a href="{{ $peminjaman->nextPageUrl() }}">Next →</a>
-            @else
-                <span class="disabled">Next →</span>
-            @endif
-
-        </div>
-
+@if(session('success'))
+    <div style="background:#d4edda; padding:10px; border-radius:6px; margin-bottom:10px;">
+        {{ session('success') }}
     </div>
+@endif
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Barang</th>
+                <th>Peminjam</th>
+                <th>Tanggal Pinjam</th>
+                <th>Tanggal Kembali</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach($peminjaman as $p)
+                <tr>
+                    <td>{{ $p->item->name ?? '-' }}</td>
+                    <td>{{ $p->employee->full_name ?? '-' }}</td>
+                    <td>{{ $p->tanggal_pinjam }}</td>
+                    <td>{{ $p->tanggal_kembali ?? '-' }}</td>
+
+                    <td>
+                        <span class="status {{ $p->status }}">
+                            {{ ucfirst($p->status) }}
+                        </span>
+                    </td>
+
+                    <td>
+                        @if($p->status == 'dipinjam')
+                            <form action="{{ route('peminjaman.kembalikan', $p->id) }}" method="POST">
+                                @csrf
+                                <button onclick="return confirm('Yakin kembalikan?')"
+                                    style="background:#27ae60;">
+                                    Kembalikan
+                                </button>
+                            </form>
+                        @else
+                            <span style="color:#aaa;">Selesai</span>
+                        @endif
+                    </td>
+
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+<div class="custom-pagination">
+
+    @if ($peminjaman->onFirstPage())
+        <span class="disabled">← Prev</span>
+    @else
+        <a href="{{ $peminjaman->previousPageUrl() }}">← Prev</a>
+    @endif
+
+    @for ($i = 1; $i <= $peminjaman->lastPage(); $i++)
+        @if ($i == $peminjaman->currentPage())
+            <span class="active">{{ $i }}</span>
+        @elseif ($i <= 3 || $i > $peminjaman->lastPage() - 2 || abs($i - $peminjaman->currentPage()) <= 1)
+            <a href="{{ $peminjaman->url($i) }}">{{ $i }}</a>
+        @elseif ($i == 4 || $i == $peminjaman->lastPage() - 2)
+            <span>...</span>
+        @endif
+    @endfor
+
+    @if ($peminjaman->hasMorePages())
+        <a href="{{ $peminjaman->nextPageUrl() }}">Next →</a>
+    @else
+        <span class="disabled">Next →</span>
+    @endif
+
 </div>
 
 @endsection

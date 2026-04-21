@@ -1,61 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Admin Panel</title>
+    <meta charset="UTF-8">
+    <title>@yield('title', 'Admin Panel')</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        .sidebar {
+            background: linear-gradient(180deg, #111827, #1f2937);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .menu-active {
+            background: #e74c3c;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        }
+    </style>
 </head>
+
 <body class="bg-gray-100 flex">
 
-    <!-- SIDEBAR -->
-    <div class="w-64 bg-gray-900 text-white min-h-screen p-5">
-        <h2 class="text-xl font-bold mb-6">Admin</h2>
+    {{-- Sidebar --}}
+    <div class="sidebar w-64 text-white min-h-screen p-5">
 
-        <ul class="space-y-3">
+        <h2 class="text-xl font-bold mb-8 flex items-center gap-2">
+             Admin Panel
+        </h2>
+
+        <ul class="space-y-2 text-sm">
+
             <li>
-                <a href="/employees" class="block p-2 rounded hover:bg-gray-700">
+                <a href="/employees" class="menu-item {{ request()->is('employees*') ? 'menu-active' : '' }}">
+                    <i data-lucide="users"></i>
                     Employee
                 </a>
             </li>
 
             <li>
-                <a href="/inventaris" class="block p-2 rounded hover:bg-gray-700">
+                <a href="/inventaris" class="menu-item {{ request()->is('inventaris*') ? 'menu-active' : '' }}">
+                    <i data-lucide="box"></i>
                     Inventaris
                 </a>
             </li>
 
             <li>
-                <a href="/peminjaman" class="block p-2 rounded hover:bg-gray-700">
-                    Form Peminjaman
+                <a href="/peminjaman" class="menu-item {{ request()->is('peminjaman*') ? 'menu-active' : '' }}">
+                    <i data-lucide="clipboard-list"></i>
+                    Peminjaman
                 </a>
             </li>
+
         </ul>
+
+        {{-- footer sidebar --}}
+        <div class="absolute bottom-5 left-5 text-xs text-gray-400">
+            {{-- © {{ date('Y') }} --}}
+        </div>
     </div>
 
-    <!-- MAIN -->
-    <div class="flex-1">
+    {{-- main --}}
+    <div class="flex-1 flex flex-col min-h-screen">
 
-        <!-- NAVBAR -->
-        <div class="bg-white shadow px-6 py-4 flex justify-between">
-            <span class="font-semibold">Sistem Admin</span>
+        {{-- navbar --}}
+        <div class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
+
+            <div>
+                <h1 class="font-semibold text-lg">
+                    @yield('title', 'Dashboard')
+                </h1>
+                <p class="text-sm text-gray-500">
+                    {{ date('l, d F Y') }}
+                </p>
+            </div>
 
             <div class="flex items-center gap-4">
-                <span>{{ auth()->user()->name }}</span>
 
+                {{-- user --}}
+                <div class="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full">
+                    <span class="text-sm">{{ auth()->user()->name }}</span>
+                </div>
+
+                {{-- logout --}}
                 <form method="POST" action="/logout">
                     @csrf
-                    <button class="bg-red-500 text-white px-3 py-1 rounded">
+                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
                         Logout
                     </button>
                 </form>
+
             </div>
         </div>
 
-        <!-- CONTENT -->
-        <div class="p-6">
-            @yield('content')
+        {{-- content --}}
+        <div class="p-6 flex justify-center">
+            <div class="w-full max-w-6xl">
+                <div class="card p-6">
+                    @yield('content')
+                </div>
+            </div>
         </div>
 
     </div>
 
+    <script>
+        lucide.createIcons();
+    </script>
+
 </body>
+
 </html>
