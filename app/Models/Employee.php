@@ -9,10 +9,23 @@ class Employee extends Model
     protected $table = 'employees';
 
     protected $fillable = [
+        'id_number',
+        'employee_id_number',
         'first_name',
         'last_name',
-        'id_number',
+        'gender',
+        'place_of_birth',
+        'date_of_birth',
+        'main_address',
+        'alternate_address',
+        'email',
+        'corporate_email',
+        'phone_number',
+        'corporate_phone_number',
+        'marriage_status',
+        'total_child',
         'division_id',
+        'position',
         'work_status',
         'start_work_date'
     ];

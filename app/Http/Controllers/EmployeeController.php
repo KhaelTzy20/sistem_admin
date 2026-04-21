@@ -32,6 +32,30 @@ class EmployeeController extends Controller
         4 => 'Freelance',
     ];
 
+    //maping gender
+    private $gender = [
+        0 => 'Laki-Laki',
+        1 => "Perempuan"
+    ];
+
+    //mapping status pernikahan
+    private $marriageStatus = [
+        0 => 'Lajang',
+        1 => 'Menikah',
+        2 => 'Cerai Hidup',
+
+    ];
+
+    //mapping posisi
+    private $position = [
+        0 => 'Non Staff',
+        1 => 'Staff',
+        2 => 'Supervisor',
+        3 => 'Kadiv',
+        4 => 'Wakil Kadiv'
+    ];
+
+
     public function index(Request $request)
     {
         $query = Employee::query();
@@ -82,7 +106,10 @@ class EmployeeController extends Controller
     {
         return view('employees.create', [
             'divisions' => $this->divisions,
-            'workStatuses' => $this->workStatuses // 🔥 biar dropdown konsisten
+            'workStatuses' => $this->workStatuses, // 🔥 biar dropdown konsisten
+            'gender' => $this->gender,
+            'marriageStatus' => $this->marriageStatus,
+            'position' => $this->position
         ]);
     }
 
@@ -90,17 +117,27 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'id_number' => 'required',
+            'employee_id_number' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'gender' => 'required',
+            'place_of_birth' => 'required',
+            'date_of_birth' => 'required|date',
+            'main_address' => 'required',
+            'alternate_address' => 'required',
+            'email' => 'required|email',
+            'corporate_email' => 'required|email',
+            'phone_number' => 'required|numeric',
+            'corporate_phone_number' => 'required|numeric',
+            'marriage_status' => 'required',
+            'total_child' => 'required|integer|min:0',
             'division_id' => 'required',
+            'position' => 'required',
             'work_status' => 'required',
-            'start_work_date' => 'required'
+            'start_work_date' => 'required|date',
         ]);
 
-        Employee::create($request->only([
-            'id_number',
-            'division_id',
-            'work_status',
-            'start_work_date'
-        ]));
+        Employee::create($request->all());
 
         return redirect('/employees')->with('success', 'Data berhasil ditambahkan');
     }
