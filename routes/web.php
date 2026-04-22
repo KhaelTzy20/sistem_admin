@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PeminjamanController;
 
 Route::get('/test', function () {
     return 'OK';
@@ -24,12 +25,16 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
 Route::get('/employees', [EmployeeController::class, 'index'])->middleware('auth');
 Route::get('/employees/create', [EmployeeController::class, 'create'])->middleware('auth');
 Route::post('/employees', [EmployeeController::class, 'store'])->middleware('auth');
+Route::get('/employees/{id}', [EmployeeController::class, 'show'])
+    ->name('employees.show')
+    ->middleware('auth');
 
 Route::resource('/inventaris', ItemController::class)->middleware('auth');
 
-Route::get('/peminjaman', function () {
-    return view('peminjaman.index');
-})->middleware('auth');
+Route::resource('/peminjaman', PeminjamanController::class)->middleware('auth');
+Route::post('/peminjaman/{id}/kembalikan', [PeminjamanController::class, 'kembalikan'])
+    ->name('peminjaman.kembalikan')
+    ->middleware('auth');
 
 Route::get('/', function () {
     return redirect('/employees');

@@ -25,35 +25,65 @@
     @endif
 </form>
 
-<div class="bg-white mt-4 rounded shadow p-4">
-    <table class="w-full table-auto">
-        <thead>
-            <tr class="bg-gray-200">
-                <th class="p-2">No</th>
-                <th>Nama</th>
-                <th>KTP</th>
-                <th>Divisi</th>
-                <th>Status Kerja</th>
-                <th>Tanggal Masuk</th>
-            </tr>
-        </thead>
+    {{-- TABLE --}}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>KTP</th>
+                    <th>Divisi</th>
+                    <th>Status</th>
+                    <th>Tanggal Masuk</th>
+                </tr>
+            </thead>
 
-        <tbody>
-            @foreach ($employees as $i => $e)
-            <tr class="border-b">
-                <td class="p-2">{{ $i+1 }}</td>
-                <td>{{ $e->first_name }} {{ $e->last_name }}</td>
-                <td>{{ $e->id_number }}</td>
-                <td>{{ $divisions[$e->division_id] ?? '-' }}</td>
-                <td>{{ $workStatuses[$e->work_status] ?? '-' }}</td>
-                <td>{{ \Carbon\Carbon::parse($e->start_work_date)->format('d M Y') }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <div class="mt-4">
-    {{ $employees->withQueryString()->links() }}
-</div>
-</div>
+            <tbody>
+                @foreach ($employees as $i => $e)
+                    <tr>
+                        <td>{{ $employees->firstItem() + $i }}</td>
+                        <td>{{ $e->first_name }} {{ $e->last_name }}</td>
+                        <td>{{ $e->id_number }}</td>
+                        <td>{{ $divisions[$e->division_id] ?? '-' }}</td>
+                        <td>{{ $workStatuses[$e->work_status] ?? '-' }}</td>
+                        <td>{{ \Carbon\Carbon::parse($e->start_work_date)->format('d M Y') }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    {{-- PAGINATION --}}
+    <div class="custom-pagination">
+
+        {{-- PREV --}}
+        @if ($employees->onFirstPage())
+            <span class="disabled">← Prev</span>
+        @else
+            <a href="{{ $employees->previousPageUrl() }}">← Prev</a>
+        @endif
+
+        {{-- PAGES --}}
+        @for ($i = 1; $i <= $employees->lastPage(); $i++)
+            @if ($i == $employees->currentPage())
+                <span class="active">{{ $i }}</span>
+            @elseif ($i <= 3 || $i > $employees->lastPage() - 2 || abs($i - $employees->currentPage()) <= 1)
+                <a href="{{ $employees->appends(request()->query())->url($i) }}">
+                    {{ $i }}
+                </a>
+            @elseif ($i == 4 || $i == $employees->lastPage() - 2)
+                <span>...</span>
+            @endif
+        @endfor
+
+        {{-- NEXT --}}
+        @if ($employees->hasMorePages())
+            <a href="{{ $employees->nextPageUrl() }}">Next →</a>
+        @else
+            <span class="disabled">Next →</span>
+        @endif
+
+    </div>
 
 @endsection
