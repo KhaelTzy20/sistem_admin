@@ -6,6 +6,7 @@ use App\Models\Peminjaman;
 use App\Models\Item;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PeminjamanController extends Controller
 {
@@ -64,16 +65,17 @@ class PeminjamanController extends Controller
     return view('peminjaman.create', compact('items', 'employees', 'itemsDipinjam'));
 }
 
-  public function store(Request $request)
+ public function store(Request $request)
 {
     $request->validate([
         'item_id' => 'required|exists:items,id',
         'employee_id' => 'required|exists:employees,id',
         'tanggal_pinjam' => 'required|date',
         'tanggal_kembali' => 'nullable|date|after_or_equal:tanggal_pinjam',
+        'foto_terima' => 'nullable|image|mimes:jpg,jpeg,png|max:2048' // 🔥 tambah ini
     ]);
 
-    // 🔥 TAMBAHAN AMAN (tidak ganggu logic lama)
+    // 🔥 VALIDASI BARANG MASIH DIPINJAM
     $isDipinjam = Peminjaman::where('item_id', $request->item_id)
         ->where('status', 'dipinjam')
         ->exists();
@@ -84,15 +86,36 @@ class PeminjamanController extends Controller
             ->withInput();
     }
 
-    // 🔽 kode kamu tetap
     $data = $request->all();
     $data['status'] = 'dipinjam';
+
+    // 🔥 HANDLE UPLOAD
+  if ($request->hasFile('foto_terima')) {
+    $file = $request->file('foto_terima');
+
+    $filename = time() . '_' . $file->getClientOriginalName();
+
+    Storage::disk('peminjaman_ftp')->put(
+        $filename,
+        fopen($file->getRealPath(), 'r')
+    );
+
+    $data['foto_terima'] = $filename;
+}
 
     Peminjaman::create($data);
 
     return redirect()->route('peminjaman.index')
         ->with('success', 'Peminjaman berhasil ditambahkan.');
 }
+
+public function show($id)
+{
+    $peminjaman = Peminjaman::with(['item', 'employee'])->findOrFail($id);
+
+    return view('peminjaman.show', compact('peminjaman'));
+}
+
 public function kembalikan($id)
 {
     $peminjaman = Peminjaman::findOrFail($id);

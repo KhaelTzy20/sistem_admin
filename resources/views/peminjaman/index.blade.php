@@ -173,6 +173,7 @@
                 <th>Peminjam</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
+                <th>Detail</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -185,7 +186,12 @@
                     <td>{{ $p->employee->full_name ?? '-' }}</td>
                     <td>{{ $p->tanggal_pinjam }}</td>
                     <td>{{ $p->tanggal_kembali ?? '-' }}</td>
-
+                    <td>
+    <a href="{{ route('peminjaman.show', $p->id) }}"
+        style="background:#34495e; padding:6px 10px; border-radius:5px; color:white; text-decoration:none;">
+        👁️
+    </a>
+</td>
                     <td>
                         <span class="status {{ $p->status }}">
                             {{ ucfirst($p->status) }}

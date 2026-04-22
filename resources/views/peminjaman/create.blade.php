@@ -92,7 +92,7 @@
     @endif
 
     
-    <form method="POST" action="/peminjaman">
+   <form method="POST" action="/peminjaman" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group">
@@ -145,6 +145,12 @@
                 value="{{ old('tanggal_kembali') }}">
         </div>
 
+            <div class="form-group">
+        <label>Foto Saat Barang Diterima</label>
+        <input type="file" name="foto_terima" accept="image/*">
+            </div>
+            <img id="preview" style="margin-top:10px; max-width:150px; display:none;">
+
         <div class="form-actions">
             <a href="/peminjaman" class="btn-back">← Kembali</a>
 
@@ -177,6 +183,17 @@ $(document).ready(function() {
         width: '100%'
     });
 
+});
+</script>
+<script>
+document.querySelector('input[name="foto_terima"]').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById('preview');
+
+    if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+    }
 });
 </script>
 

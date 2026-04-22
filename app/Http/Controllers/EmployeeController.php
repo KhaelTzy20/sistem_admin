@@ -113,6 +113,17 @@ class EmployeeController extends Controller
         ]);
     }
 
+public function show($id)
+{
+    $employee = Employee::findOrFail($id);
+
+    return view('employees.show', [
+        'employee' => $employee,
+        'divisions' => $this->divisions,
+        'workStatuses' => $this->workStatuses
+    ]);
+}
+
     public function store(Request $request)
     {
         $request->validate([

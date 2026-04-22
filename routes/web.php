@@ -25,6 +25,9 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
 Route::get('/employees', [EmployeeController::class, 'index'])->middleware('auth');
 Route::get('/employees/create', [EmployeeController::class, 'create'])->middleware('auth');
 Route::post('/employees', [EmployeeController::class, 'store'])->middleware('auth');
+Route::get('/employees/{id}', [EmployeeController::class, 'show'])
+    ->name('employees.show')
+    ->middleware('auth');
 
 Route::resource('/inventaris', ItemController::class)->middleware('auth');
 

@@ -13,7 +13,8 @@ class Peminjaman extends Model
         'employee_id',
         'tanggal_pinjam',
         'tanggal_kembali',
-        'status'
+        'status',
+        'foto_terima'
     ];
 
     public function item()
