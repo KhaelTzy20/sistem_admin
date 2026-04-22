@@ -14,25 +14,17 @@ class AddUserIdToEmployeesTable extends Migration
     public function up(): void
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->unsignedInteger('user_id')->after('status');
-
-            $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->cascadeOnDelete()
-                  ->cascadeOnUpdate();
+            $table->integer('user_id')->after('status');
         });
     }
-
     /**
      * Reverse the migrations.
      *
      * @return void
      */
-     public function down(): void
+    public function down(): void
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
         });
     }
