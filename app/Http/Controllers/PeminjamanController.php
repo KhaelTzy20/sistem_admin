@@ -90,15 +90,25 @@ class PeminjamanController extends Controller
     $data['status'] = 'dipinjam';
 
     // 🔥 HANDLE UPLOAD
-  if ($request->hasFile('foto_terima')) {
-    $file = $request->file('foto_terima');
+//   if ($request->hasFile('foto_terima')) {
+//     $file = $request->file('foto_terima');
 
+//     $filename = time() . '_' . $file->getClientOriginalName();
+
+//     Storage::disk('peminjaman_ftp')->put(
+//         $filename,
+//         fopen($file->getRealPath(), 'r')
+//     );
+
+//     $data['foto_terima'] = $filename;
+// }
+
+if ($request->hasFile('foto_terima')) {
+    $file = $request->file('foto_terima');
     $filename = time() . '_' . $file->getClientOriginalName();
 
-    Storage::disk('peminjaman_ftp')->put(
-        $filename,
-        fopen($file->getRealPath(), 'r')
-    );
+    // simpan langsung ke public/uploads/peminjaman
+    $file->move(public_path('uploads/peminjaman'), $filename);
 
     $data['foto_terima'] = $filename;
 }
@@ -116,16 +126,53 @@ public function show($id)
     return view('peminjaman.show', compact('peminjaman'));
 }
 
-public function kembalikan($id)
-{
-    $peminjaman = Peminjaman::findOrFail($id);
+// public function kembalikan($id)
+// {
+//     $peminjaman = Peminjaman::findOrFail($id);
 
-    // 🔥 update status + tanggal kembali
-    $peminjaman->update([
-        'status' => 'dikembalikan',
-        'tanggal_kembali' => now()
+//     // 🔥 update status + tanggal kembali
+//     $peminjaman->update([
+//         'status' => 'dikembalikan',
+//         'tanggal_kembali' => now()
+//     ]);
+
+//     return redirect()->back()->with('success', 'Barang berhasil dikembalikan');
+// }
+
+public function formKembalikan($id)
+{
+    $peminjaman = Peminjaman::with(['item', 'employee'])->findOrFail($id);
+
+    return view('peminjaman.kembalikan', compact('peminjaman'));
+}
+
+public function prosesKembalikan(Request $request, $id)
+{
+    $request->validate([
+        'tanggal_kembali' => 'required|date',
+        'foto_kembali' => 'nullable|image|max:2048'
     ]);
 
-    return redirect()->back()->with('success', 'Barang berhasil dikembalikan');
+    $peminjaman = Peminjaman::findOrFail($id);
+
+    $data = [
+        'tanggal_kembali' => $request->tanggal_kembali,
+        'status' => 'dikembalikan'
+    ];
+
+    // 🔥 upload foto lokal
+    if ($request->hasFile('foto_kembali')) {
+        $file = $request->file('foto_kembali');
+        $filename = time().'_'.$file->getClientOriginalName();
+
+        $file->move(public_path('uploads/pengembalian'), $filename);
+
+        $data['foto_kembali'] = $filename;
+    }
+
+    $peminjaman->update($data);
+
+    return redirect()->route('peminjaman.index')
+        ->with('success', 'Barang berhasil dikembalikan.');
 }
 }

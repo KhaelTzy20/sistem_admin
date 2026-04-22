@@ -14,7 +14,8 @@ class Peminjaman extends Model
         'tanggal_pinjam',
         'tanggal_kembali',
         'status',
-        'foto_terima'
+        'foto_terima',
+        'foto_kembali',
     ];
 
     public function item()

@@ -197,4 +197,6 @@ document.querySelector('input[name="foto_terima"]').addEventListener('change', f
 });
 </script>
 
+<img src="{{ asset('uploads/peminjaman/' . $p->foto_terima) }}">
+
 @endsection

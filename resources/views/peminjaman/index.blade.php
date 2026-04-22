@@ -200,14 +200,11 @@
 
                     <td>
                         @if($p->status == 'dipinjam')
-                            <form action="{{ route('peminjaman.kembalikan', $p->id) }}" method="POST">
-                                @csrf
-                                <button onclick="return confirm('Yakin kembalikan?')"
-                                    style="background:#27ae60;">
-                                    Kembalikan
-                                </button>
-                            </form>
-                        @else
+                           <a href="{{ route('peminjaman.formKembalikan', $p->id) }}"
+                                style="background:#27ae60; padding:6px 10px; border-radius:5px; color:white; text-decoration:none;">
+                                Kembalikan
+                            </a>
+                                @else
                             <span style="color:#aaa;">Selesai</span>
                         @endif
                     </td>
