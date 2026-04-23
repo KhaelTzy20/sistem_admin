@@ -59,29 +59,24 @@
         <div class="detail-list">
 
             <div class="row">
-                <span>NIP</span>
-                <b>{{ $employee->nip ?? '-' }}</b>
-            </div>
-
-            <div class="row">
                 <span>NIK</span>
                 <b>{{ $employee->id_number ?? '-' }}</b>
             </div>
 
             <div class="row">
                 <span>Jenis Kelamin</span>
-                <b>{{ $employee->gender ?? '-' }}</b>
+                <b>{{ $employee->gender_label }}</b>
             </div>
 
             <div class="row">
                 <span>Tempat Lahir</span>
-                <b>{{ $employee->birth_place ?? '-' }}</b>
+                <b>{{ $employee->place_of_birth ?? '-' }}</b>
             </div>
 
             <div class="row">
                 <span>Tanggal Lahir</span>
                 <b>
-                    {{ $employee->birth_date 
+                    {{ $employee->date_of_birth
                         ? \Carbon\Carbon::parse($employee->birth_date)->translatedFormat('l, d F Y') 
                         : '-' }}
                 </b>
@@ -89,42 +84,42 @@
 
             <div class="row">
                 <span>Email Pribadi</span>
-                <b>{{ $employee->email_personal ?? '-' }}</b>
+                <b>{{ $employee->email ?? '-' }}</b>
             </div>
 
             <div class="row">
                 <span>Email Kantor</span>
-                <b>{{ $employee->email_office ?? '-' }}</b>
+                <b>{{ $employee->corporate_email ?? '-' }}</b>
             </div>
 
             <div class="row">
                 <span>No HP Pribadi</span>
-                <b>{{ $employee->phone_personal ?? '-' }}</b>
+                <b>{{ $employee->phone_number ?? '-' }}</b>
             </div>
 
             <div class="row">
                 <span>No HP Kantor</span>
-                <b>{{ $employee->phone_office ?? '-' }}</b>
+                <b>{{ $employee->corporate_phone_number ?? '-' }}</b>
             </div>
 
             <div class="row">
-                <span>Alamat KTP</span>
-                <b>{{ $employee->address_ktp ?? '-' }}</b>
+                <span>Alamat (sesuai KTP)</span>
+                <b>{{ $employee->main_address ?? '-' }}</b>
             </div>
 
-            <div class="row">
+              <div class="row">
                 <span>Alamat Sekarang</span>
-                <b>{{ $employee->address_now ?? '-' }}</b>
+                <b>{{ $employee->alternate_address ?? '-' }}</b>
             </div>
 
             <div class="row">
                 <span>Status Pernikahan</span>
-                <b>{{ $employee->marital_status ?? '-' }}</b>
+                <b>{{ $employee->marriage_status_label }}</b>
             </div>
 
             <div class="row">
                 <span>Posisi</span>
-                <b>{{ $employee->position ?? '-' }}</b>
+                <b>{{ $employee->position_label }}</b>
             </div>
 
             <div class="row">
@@ -134,7 +129,7 @@
 
             <div class="row">
                 <span>Status Kerja</span>
-                <b>{{ $workStatuses[$employee->work_status] ?? '-' }}</b>
+                <b>{{ $employee->work_status_label }}</b>
             </div>
 
             <div class="row">

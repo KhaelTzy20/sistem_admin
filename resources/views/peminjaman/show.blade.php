@@ -191,12 +191,93 @@
             <div class="card-header">
                 Detail Peminjam
             </div>
+            <div class="detail-list">
 
-            <div style="padding:20px; color:#aaa;">
-                (Belum dibuat)
-            </div>
-        </div>
-
+    <div class="row">
+        <span>Nama</span>
+        <b>{{ $peminjaman->employee->full_name ?? '-' }}</b>
     </div>
+     <div class="row">
+                <span>NIK</span>
+                <b>{{ $peminjaman->employee->id_number ?? '-' }}</b>
+            </div>
+            <div class="row">
+                <span>Jenis Kelamin</span>
+                <b>{{ $peminjaman->employee->gender_label }}</b>
+            </div>
+
+            <div class="row">
+                <span>Tempat Lahir</span>
+                <b>{{ $peminjaman->employee->place_of_birth ?? '-' }}</b>
+            </div>
+
+            <div class="row">
+                <span>Tanggal Lahir</span>
+                <b>
+                    {{ $peminjaman->employee->date_of_birth
+                        ? \Carbon\Carbon::parse($peminjaman->employee->birth_date)->translatedFormat('l, d F Y') 
+                        : '-' }}
+                </b>
+            </div>
+
+            <div class="row">
+                <span>Email Pribadi</span>
+                <b>{{ $peminjaman->employee->email ?? '-' }}</b>
+            </div>
+
+            <div class="row">
+                <span>Email Kantor</span>
+                <b>{{ $peminjaman->employee->corporate_email ?? '-' }}</b>
+            </div>
+
+            <div class="row">
+                <span>No HP Pribadi</span>
+                <b>{{ $peminjaman->employee->phone_number ?? '-' }}</b>
+            </div>
+
+            <div class="row">
+                <span>No HP Kantor</span>
+                <b>{{ $peminjaman->employee->corporate_phone_number ?? '-' }}</b>
+            </div>
+
+            <div class="row">
+                <span>Alamat (sesuai KTP)</span>
+                <b>{{ $peminjaman->employee->main_address ?? '-' }}</b>
+            </div>
+
+              <div class="row">
+                <span>Alamat Sekarang</span>
+                <b>{{ $peminjaman->employee->alternate_address ?? '-' }}</b>
+            </div>
+
+            <div class="row">
+                <span>Status Pernikahan</span>
+                <b>{{ $peminjaman->employee->marriage_status_label }}</b>
+            </div>
+
+            <div class="row">
+                <span>Posisi</span>
+                <b>{{ $peminjaman->employee->position_label }}</b>
+            </div>
+
+            <div class="row">
+                <span>Divisi</span>
+                <b>{{ $peminjaman->employee->division_label }}</b>
+            </div>
+            
+            <div class="row">
+                <span>Status Kerja</span>
+                <b>{{ $peminjaman->employee->work_status_label }}</b>
+            </div>
+
+            <div class="row">
+                <span>Tanggal Masuk</span>
+                <b>
+                    {{ $peminjaman->employee->start_work_date 
+                        ? \Carbon\Carbon::parse($peminjaman->employee->start_work_date)->translatedFormat('l, d F Y') 
+                        : '-' }}
+                </b>
+            </div>
+
 </div>
 @endsection
