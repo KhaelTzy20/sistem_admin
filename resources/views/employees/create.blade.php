@@ -108,6 +108,54 @@
     </div>
 @endif
 
+<div class="form-group">
+    <label>Pilih User</label>
+    <select id="user_id">
+        <option value="">-- Pilih User --</option>
+        @foreach($users as $u)
+            <option value="{{ $u->id }}">
+                {{ $u->name }} ({{ $u->email }})
+            </option>
+        @endforeach
+    </select>
+</div>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+$(document).ready(function() {
+
+    $('#user_id').select2({
+        placeholder: "Cari user...",
+        allowClear: true,
+        width: '100%'
+    });
+
+    $('#user_id').on('change', function() {
+        let userId = $(this).val();
+
+        if (!userId) return;
+
+        $.get('/users/' + userId, function(data) {
+
+            let name = data.name.split(' ');
+            let firstName = name[0];
+            let lastName = name.slice(1).join(' ');
+
+            $('input[name="first_name"]').val(firstName);
+            $('input[name="last_name"]').val(lastName);
+
+            $('input[name="email"]').val(data.email);
+            $('input[name="phone_number"]').val(data.phone);
+        });
+    });
+
+});
+</script>
+
+
 <form method="POST" action="/employees">
     @csrf
 

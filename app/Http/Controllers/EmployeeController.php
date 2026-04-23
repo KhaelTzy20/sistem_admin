@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class EmployeeController extends Controller
 {
@@ -104,7 +105,10 @@ class EmployeeController extends Controller
 
     public function create()
     {
-        return view('employees.create', [
+        $users = User::select('id', 'name', 'email', 'phone')->get();
+
+    return view('employees.create', [
+        'users' => $users, // 🔥 ini yang tadi kurang
             'divisions' => $this->divisions,
             'workStatuses' => $this->workStatuses, // 🔥 biar dropdown konsisten
             'gender' => $this->gender,

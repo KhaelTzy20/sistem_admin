@@ -11,6 +11,10 @@ Route::get('/test', function () {
     return 'OK';
 });
 
+Route::get('/users/{id}', function($id) {
+    return \App\Models\User::find($id);
+});
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
