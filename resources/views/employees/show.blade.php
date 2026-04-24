@@ -48,6 +48,10 @@
 
     <div class="page-container">
 
+        <a href="{{ url()->previous() }}"
+            class="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg border border-gray-200 transition">
+            ← Kembali
+        </a>
         <h3 class="title">👨‍💼 Detail Employee</h3>
 
         <div class="card">
@@ -126,7 +130,7 @@
 
                 <div class="row">
                     <span>Divisi</span>
-                   <b>{{ $employee->division_label }}</b>
+                    <b>{{ $employee->division_label }}</b>
                 </div>
 
                 <div class="row">
