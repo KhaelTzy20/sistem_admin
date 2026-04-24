@@ -142,7 +142,7 @@
 
     </form>
 
-   {{-- TABLE --}}
+    {{-- TABLE --}}
     <div class="table-wrapper">
         <table>
             <thead>
@@ -151,9 +151,9 @@
                     <th>Nama</th>
                     <th>KTP</th>
                     <th>Divisi</th>
-                    <th>Detail</th>
                     <th>Status</th>
                     <th>Tanggal Masuk</th>
+                    <th>Detail</th>
                 </tr>
             </thead>
 
@@ -163,15 +163,15 @@
                         <td>{{ $employees->firstItem() + $i }}</td>
                         <td>{{ $e->first_name }} {{ $e->last_name }}</td>
                         <td>{{ $e->id_number }}</td>
-                        <td>{{ $divisions[$e->division_id] ?? '-' }}</td>
-                        <td>
-    <a href="{{ route('employees.show', $e->id) }}"
-        style="background:#34495e; padding:6px 10px; border-radius:5px; color:white; text-decoration:none;">
-        🔍
-    </a>
-</td>
-                        <td>{{ $workStatuses[$e->work_status] ?? '-' }}</td>
+                        <td>{{ $e->divisionRel->name ?? '-' }}</td>
+                        <td>{{ $e->workStatusRel->name ?? '-' }}</td>
                         <td>{{ \Carbon\Carbon::parse($e->start_work_date)->format('d M Y') }}</td>
+                        <td>
+                            <a href="{{ route('employees.show', $e->id) }}"
+                                style="background:#34495e; padding:6px 10px; border-radius:5px; color:white; text-decoration:none;">
+                                🔍
+                            </a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
