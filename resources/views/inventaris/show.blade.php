@@ -114,13 +114,16 @@
         </div>
     </div>
 
-    <div class="photo-box">
-        @if($item->photo)
-            <img src="https://marketing-api.outclass.id/assets/images/items/{{ $item->photo }}">
-        @else
-            <div class="no-photo">Tidak ada foto</div>
-        @endif
-    </div>
+   <div class="photo-box">
+    @if(!empty(trim($item->photo)))
+        <img 
+            src="{{ asset('uploads/inventaris/' . trim($item->photo)) }}" 
+            alt="photo"
+        >
+    @else
+        <div class="no-photo">Tidak ada foto</div>
+    @endif
+</div>
 
     <div class="detail-grid">
 

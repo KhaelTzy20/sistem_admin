@@ -59,7 +59,7 @@ class ItemController extends Controller
             'quantity' => 'required',
             'pay_date' => 'required|date',
             'arrival_date' => 'required|date',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:10240'
         ]);
 
         $data = $request->only([
@@ -77,14 +77,24 @@ class ItemController extends Controller
         ]);
 
         // upload foto
+        // if ($request->hasFile('photo')) {
+        //     $file = $request->file('photo');
+        //     $filename = time() . '_' . $file->getClientOriginalName();
+
+        //     Storage::disk('ftp')->put($filename, fopen($file->getRealPath(), 'r'));
+
+        //     $data['photo'] = $filename;
+        // }
+
         if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $filename = time() . '_' . $file->getClientOriginalName();
+    $file = $request->file('photo');
+    $filename = time() . '_' . $file->getClientOriginalName();
 
-            Storage::disk('ftp')->put($filename, fopen($file->getRealPath(), 'r'));
+    // simpan ke local
+    $file->move(public_path('uploads/inventaris'), $filename);
 
-            $data['photo'] = $filename;
-        }
+    $data['photo'] = $filename;
+}
 
         Item::create($data);
 
@@ -123,27 +133,42 @@ class ItemController extends Controller
             'item_status_id' => 'required',
             'location_id' => 'required',
             'employee_id' => 'required',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:10240'
         ]);
 
         $item = Item::findOrFail($id);
 
         $data = $request->except('photo');
 
-        if ($request->hasFile('photo')) {
+        // if ($request->hasFile('photo')) {
 
-            $file = $request->file('photo');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        //     $file = $request->file('photo');
+        //     $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-            // hapus lama
-            if ($item->photo && Storage::disk('ftp')->exists($item->photo)) {
-                Storage::disk('ftp')->delete($item->photo);
-            }
+        //     // hapus lama
+        //     if ($item->photo && Storage::disk('ftp')->exists($item->photo)) {
+        //         Storage::disk('ftp')->delete($item->photo);
+        //     }
 
-            Storage::disk('ftp')->put($filename, fopen($file->getRealPath(), 'r'));
+        //     Storage::disk('ftp')->put($filename, fopen($file->getRealPath(), 'r'));
 
-            $data['photo'] = $filename;
-        }
+        //     $data['photo'] = $filename;
+        // }
+if ($request->hasFile('photo')) {
+
+    $file = $request->file('photo');
+    $filename = time() . '_' . $file->getClientOriginalName();
+
+    // hapus foto lama
+    if ($item->photo && file_exists(public_path('uploads/inventaris/' . $item->photo))) {
+        unlink(public_path('uploads/inventaris/' . $item->photo));
+    }
+
+    // simpan baru
+    $file->move(public_path('uploads/inventaris'), $filename);
+
+    $data['photo'] = $filename;
+}
 
         $item->update($data);
 
