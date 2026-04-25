@@ -72,7 +72,7 @@ class PeminjamanController extends Controller
         'employee_id' => 'required|exists:employees,id',
         'tanggal_pinjam' => 'required|date',
         'tanggal_kembali' => 'nullable|date|after_or_equal:tanggal_pinjam',
-        'foto_terima' => 'nullable|image|mimes:jpg,jpeg,png|max:10240' // 🔥 tambah ini
+        'foto_terima' => 'nullable|image|mimes:jpg,jpeg,png|max:10240', // 🔥 tambah ini
     ]);
 
     // 🔥 VALIDASI BARANG MASIH DIPINJAM
@@ -151,16 +151,18 @@ public function prosesKembalikan(Request $request, $id)
     $request->validate([
         'tanggal_kembali' => 'required|date',
         'foto_kembali' => 'nullable|image|max:10240',
+        'deskripsi_kembali' => 'nullable|string|max:1000',
     ]);
 
     $peminjaman = Peminjaman::findOrFail($id);
 
     $data = [
         'tanggal_kembali' => $request->tanggal_kembali,
-        'status' => 'dikembalikan'
+        'status' => 'dikembalikan',
+        'deskripsi_kembali' => $request->deskripsi_kembali,
     ];
 
-    // 🔥 upload foto lokal
+    // upload foto
     if ($request->hasFile('foto_kembali')) {
         $file = $request->file('foto_kembali');
         $filename = time().'_'.$file->getClientOriginalName();

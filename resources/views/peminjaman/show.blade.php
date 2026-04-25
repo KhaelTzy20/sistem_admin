@@ -278,6 +278,78 @@
                         : '-' }}
                 </b>
             </div>
+            <div class="card" style="margin-top:20px;">
 
+    <div class="card-header">
+        Detail Peminjaman & Pengembalian
+    </div>
+
+    <div class="detail-list">
+
+        {{-- TANGGAL PINJAM --}}
+        <div class="row">
+            <span>Tanggal Pinjam</span>
+            <b>
+                {{ $peminjaman->tanggal_pinjam 
+                    ? \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->translatedFormat('d F Y') 
+                    : '-' }}
+            </b>
+        </div>
+
+        {{-- FOTO TERIMA --}}
+        <div class="row" style="flex-direction: column; align-items: flex-start;">
+            <span>Foto Saat Diterima</span>
+            @if($peminjaman->foto_terima)
+                <img 
+                    src="{{ url('uploads/peminjaman/' . $peminjaman->foto_terima) }}" 
+                    style="margin-top:8px; max-width:150px; border-radius:6px;"
+                >
+            @else
+                <b>-</b>
+            @endif
+        </div>
+
+        {{-- TANGGAL KEMBALI --}}
+        <div class="row">
+            <span>Tanggal Kembali</span>
+            <b>
+                {{ $peminjaman->tanggal_kembali 
+                    ? \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->translatedFormat('d F Y') 
+                    : '-' }}
+            </b>
+        </div>
+
+        {{-- FOTO KEMBALI --}}
+        <div class="row" style="flex-direction: column; align-items: flex-start;">
+            <span>Foto Saat Dikembalikan</span>
+            @if($peminjaman->foto_kembali)
+                <img 
+                    src="{{ url('uploads/pengembalian/' . $peminjaman->foto_kembali) }}" 
+                    style="margin-top:8px; max-width:150px; border-radius:6px;"
+                >
+            @else
+                <b>-</b>
+            @endif
+        </div>
+
+        {{-- DESKRIPSI --}}
+        <div class="row" style="flex-direction: column; align-items: flex-start;">
+            <span>Deskripsi Pengembalian</span>
+            <b style="margin-top:4px;">
+                {{ $peminjaman->deskripsi_kembali ?? '-' }}
+            </b>
+        </div>
+
+        {{-- STATUS --}}
+        <div class="row">
+            <span>Status</span>
+            <b style="color: {{ $peminjaman->status == 'dikembalikan' ? '#27ae60' : '#e74c3c' }}">
+                {{ ucfirst($peminjaman->status) }}
+            </b>
+        </div>
+
+    </div>
+
+</div>
 </div>
 @endsection

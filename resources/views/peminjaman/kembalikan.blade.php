@@ -123,6 +123,15 @@
 
         <img id="preview" class="photo-preview">
 
+        <div class="form-group">
+    <label>Deskripsi Pengembalian</label>
+    <textarea 
+        name="deskripsi_kembali" 
+        rows="3"
+        placeholder="Contoh: Barang dikembalikan dalam kondisi baik / ada kerusakan..."
+        style="padding:8px; border-radius:6px; border:1px solid #ccc; width:100%;"
+    >{{ old('deskripsi_kembali') }}</textarea>
+</div>
         <div class="form-actions">
             <a href="/peminjaman" class="btn-back">← Kembali</a>
 
