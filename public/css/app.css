@@ -28,3 +28,264 @@
     border-radius: 12px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
 }
+
+/* =========================
+   EMPLOYEE PAGE
+========================= */
+
+.employee-page .search-box {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.employee-page input[type="text"] {
+    padding: 8px;
+    flex: 1;
+    min-width: 200px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.employee-page button {
+    padding: 8px 14px;
+    border: none;
+    background: #3498db;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.employee-page button:hover {
+    background: #2980b9;
+}
+
+.employee-page .btn-add {
+    padding: 8px 14px;
+    background: #3498db;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.employee-page .btn-add:hover {
+    background: #27ae60;
+}
+
+.employee-page .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.employee-page table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.employee-page th {
+    background: #e74c3c;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.employee-page td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+.employee-page tr:hover {
+    background: #f9eaea;
+}
+
+.employee-page .custom-pagination {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 20px;
+}
+
+.employee-page .custom-pagination a,
+.employee-page .custom-pagination span {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    font-size: 13px;
+    color: #555;
+    min-width: 32px;
+    text-align: center;
+}
+
+.employee-page .custom-pagination a:hover {
+    background: #f8d7da;
+}
+
+.employee-page .custom-pagination .active {
+    background: #e74c3c;
+    color: white;
+}
+
+.employee-page .custom-pagination .disabled {
+    color: #aaa;
+    background: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+    .employee-page .search-box {
+        flex-direction: column;
+    }
+
+    .employee-page button {
+        width: 100%;
+    }
+}
+
+/* =========================
+   INVENTARIS PAGE
+========================= */
+
+.inventaris-page .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.inventaris-page .search-box {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.inventaris-page input[type="text"] {
+    padding: 10px;
+    flex: 1;
+    min-width: 200px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.inventaris-page button {
+    padding: 10px 14px;
+    border: none;
+    background: #3498db;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.inventaris-page button:hover {
+    background: #2980b9;
+}
+
+.inventaris-page .btn-add {
+    padding: 8px 14px;
+    background: #3498db;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.inventaris-page .btn-add:hover {
+    background: #27ae60;
+}
+
+.inventaris-page .btn-action {
+    padding: 6px 10px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.inventaris-page .btn-detail {
+    background: #2ecc71;
+}
+
+.inventaris-page .btn-edit {
+    background: #f39c12;
+}
+
+.inventaris-page .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.inventaris-page table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inventaris-page th {
+    background: #e74c3c;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+.inventaris-page td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.inventaris-page tr:hover {
+    background: #f9eaea;
+}
+
+.inventaris-page .custom-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.inventaris-page .custom-pagination a,
+.inventaris-page .custom-pagination span {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    font-size: 13px;
+    color: #555;
+}
+
+.inventaris-page .custom-pagination a:hover {
+    background: #f8d7da;
+}
+
+.inventaris-page .custom-pagination .active {
+    background: #e74c3c;
+    color: white;
+}
+
+.inventaris-page .custom-pagination .disabled {
+    color: #aaa;
+    background: #f5f5f5;
+}
+
+.inventaris-page .alert-success {
+    background: #d4edda;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    color: #155724;
+}
+
+@media (max-width: 768px) {
+    .inventaris-page .search-box {
+        flex-direction: column;
+    }
+
+    .inventaris-page button {
+        width: 100%;
+    }
+}

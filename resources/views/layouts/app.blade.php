@@ -6,36 +6,10 @@
     <title>@yield('title', 'Admin Panel')</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
-        .sidebar {
-            background: linear-gradient(180deg, #111827, #1f2937);
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-radius: 8px;
-            transition: 0.2s;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .menu-active {
-            background: #e74c3c;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-        }
-    </style>
 </head>
 
 <body class="bg-gray-100 flex">
