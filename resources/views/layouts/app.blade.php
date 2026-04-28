@@ -43,7 +43,7 @@
                     Inventaris
                 </a>
             </li>
-@endif
+            @endif
             <li>
                 <a href="/peminjaman"
                     class="menu-item {{ request()->is('peminjaman*') ? 'menu-active' : '' }}">

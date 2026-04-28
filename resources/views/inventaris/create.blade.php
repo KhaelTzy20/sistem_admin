@@ -4,6 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/pages/inventaris-create.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -105,7 +106,10 @@
             ] as $field => [$collection, $label])
                 <div class="form-group">
                     <label>{{ ucfirst(str_replace('_id','',$field)) }}</label>
-                    <select name="{{ $field }}">
+                    <select name="{{ $field }}"
+    @if($field == 'employee_id') id="employee_id" @endif
+    @if($field == 'supplier_id') id="supplier_id" @endif
+>
                         <option value="">-- Pilih --</option>
                         @foreach($collection as $item)
                             <option value="{{ $item->id }}"
@@ -144,5 +148,28 @@ function previewFile(event) {
     }
 }
 </script>
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    $('#employee_id').select2({
+        placeholder: "Cari Employee...",
+        allowClear: true,
+        width: '100%'
+    });
+
+    $('#supplier_id').select2({
+        placeholder: "Cari Supplier...",
+        allowClear: true,
+        width: '100%'
+    });
+
+});
+</script>
+@endpush
 
 @endsection
