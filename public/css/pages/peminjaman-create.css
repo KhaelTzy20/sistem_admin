@@ -1,0 +1,76 @@
+.peminjaman-create-page .form-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.peminjaman-create-page .title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.peminjaman-create-page .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.peminjaman-create-page label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.peminjaman-create-page input,
+.peminjaman-create-page select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.peminjaman-create-page .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.peminjaman-create-page .btn-submit {
+    background: #27ae60;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.peminjaman-create-page .btn-submit:hover {
+    background: #219150;
+}
+
+.peminjaman-create-page .btn-back {
+    background: #7f8c8d;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.peminjaman-create-page .btn-back:hover {
+    background: #636e72;
+}
+
+.peminjaman-create-page .error-box {
+    background: #f8d7da;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.peminjaman-create-page .preview-img {
+    margin-top: 10px;
+    max-width: 150px;
+    border-radius: 6px;
+    display: none;
+}

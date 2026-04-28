@@ -1,0 +1,174 @@
+.employee-page {
+    width: 100%;
+}
+
+/* HEADER */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.page-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* SEARCH */
+.search-box {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search-box input {
+    padding: 8px;
+    flex: 1;
+    min-width: 200px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* BUTTON VARIANTS */
+.btn-secondary {
+    background: #7f8c8d;
+    color: white;
+}
+
+.btn-dark {
+    background: #34495e;
+    color: white;
+}
+
+.btn-sm {
+    padding: 6px 10px;
+    font-size: 13px;
+}
+
+/* PAGINATION */
+.pagination {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    font-size: 13px;
+    color: #555;
+}
+
+.pagination .active {
+    background: #e74c3c;
+    color: white;
+}
+
+.pagination .disabled {
+    color: #aaa;
+    background: #f5f5f5;
+}
+
+.employee-show-page {
+    max-width: 800px;
+    margin: auto;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* CARD */
+.employee-card {
+    overflow: hidden;
+}
+
+.card-header {
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+    font-weight: 600;
+}
+
+/* DETAIL */
+.detail-list {
+    padding: 15px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.detail-row span {
+    color: #666;
+}
+
+.employee-form-page {
+    max-width: 900px;
+    margin: auto;
+}
+
+.form-section {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #374151;
+    border-left: 4px solid #e74c3c;
+    padding-left: 10px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.error-box {
+    background: #fee2e2;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.error-box li {
+    color: #b91c1c;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}

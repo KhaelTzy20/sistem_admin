@@ -1,98 +1,16 @@
 @extends('layouts.app')
 @section('title', 'Form Pengembalian')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/pages/peminjaman-kembalikan.css') }}">
+@endpush
+
 @section('content')
-
-<style>
-    .form-container {
-        max-width: 700px;
-        margin: 0 auto;
-    }
-
-    .form-header {
-        margin-bottom: 20px;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-bottom: 14px;
-    }
-
-    label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #555;
-    }
-
-    input {
-        padding: 8px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        width: 100%;
-    }
-
-    .btn-submit {
-        background: #27ae60;
-        color: white;
-        padding: 8px 16px;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-    }
-
-    .btn-submit:hover {
-        background: #219150;
-    }
-
-    .btn-back {
-        background: #7f8c8d;
-        color: white;
-        padding: 8px 14px;
-        border-radius: 6px;
-        text-decoration: none;
-    }
-
-    .btn-back:hover {
-        background: #636e72;
-    }
-
-    .form-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 20px;
-    }
-
-    .info-box {
-        background:#ecf0f1;
-        padding:10px;
-        border-radius:6px;
-        margin-bottom:15px;
-        font-size:14px;
-    }
-
-    .photo-preview {
-        margin-top:10px;
-        max-width:150px;
-        display:none;
-        border-radius:6px;
-    }
-
-    .photo-existing {
-        margin-top:10px;
-        max-width:150px;
-        border-radius:6px;
-    }
-</style>
 
 <div class="form-container">
 
     <div class="form-header">
-        <h3 style="font-size:20px; font-weight:600;">
-            🔄 Form Pengembalian
-        </h3>
+        <h3>🔄 Form Pengembalian</h3>
     </div>
 
     {{-- INFO BARANG --}}
@@ -114,8 +32,8 @@
             <input type="date" name="tanggal_kembali"
                 value="{{ date('Y-m-d') }}">
         </div>
-        
-        {{-- FOTO KEMBALI --}}
+
+        {{-- FOTO --}}
         <div class="form-group">
             <label>Foto Saat Dikembalikan</label>
             <input type="file" name="foto_kembali" accept="image/*">
@@ -123,15 +41,16 @@
 
         <img id="preview" class="photo-preview">
 
+        {{-- DESKRIPSI --}}
         <div class="form-group">
-    <label>Deskripsi Pengembalian</label>
-    <textarea 
-        name="deskripsi_kembali" 
-        rows="3"
-        placeholder="Contoh: Barang dikembalikan dalam kondisi baik / ada kerusakan..."
-        style="padding:8px; border-radius:6px; border:1px solid #ccc; width:100%;"
-    >{{ old('deskripsi_kembali') }}</textarea>
-</div>
+            <label>Deskripsi Pengembalian</label>
+            <textarea 
+                name="deskripsi_kembali" 
+                rows="3"
+                placeholder="Contoh: Barang dikembalikan dalam kondisi baik / ada kerusakan..."
+            >{{ old('deskripsi_kembali') }}</textarea>
+        </div>
+
         <div class="form-actions">
             <a href="/peminjaman" class="btn-back">← Kembali</a>
 
@@ -144,6 +63,10 @@
 
 </div>
 
+@endsection
+
+
+@push('scripts')
 <script>
 document.querySelector('input[name="foto_kembali"]').addEventListener('change', function(e) {
     const file = e.target.files[0];
@@ -155,5 +78,4 @@ document.querySelector('input[name="foto_kembali"]').addEventListener('change', 
     }
 });
 </script>
-
-@endsection
+@endpush

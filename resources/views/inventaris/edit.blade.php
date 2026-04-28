@@ -1,223 +1,201 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Asset')
+@section('title', 'Edit Asset')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/pages/inventaris-edit.css') }}">
+@endpush
 
 @section('content')
 
-    <style>
-        .detail-container {
-            width: 100%;
-            max-width: 850px;
-            margin: 0 auto;
-        }
+<div class="form-wrapper">
+<div class="form-container">
 
-        .detail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
+<h3 style="font-size:20px; font-weight:600;">
+    ✏️ Edit Asset
+</h3>
 
-        .badge-code {
-            background: #3498db;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-        }
+{{-- ERROR VALIDATION --}}
+@if ($errors->any())
+    <div style="background:#f8d7da; padding:10px; border-radius:6px; margin-bottom:15px;">
+        <ul style="margin:0; padding-left:18px;">
+            @foreach ($errors->all() as $error)
+                <li style="color:#c0392b;">{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-        .photo-box {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
+<form action="{{ route('inventaris.update', $item->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('PUT')
 
-        .photo-box img {
-            width: 170px;
-            height: 170px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 1px solid #eee;
-            transition: 0.3s;
-        }
+    {{-- FOTO --}}
+    <div class="photo-box">
+        @if($item->photo)
+            <img src="{{ asset('uploads/inventaris/' . $item->photo) }}" id="previewImage">
+        @else
+            <img id="previewImage" style="display:none;">
+        @endif
 
-        .photo-box img:hover {
-            transform: scale(1.05);
-        }
+        <br><br>
 
-        .no-photo {
-            color: #aaa;
-            font-size: 14px;
-        }
+        <input type="file" name="photo" accept="image/*" onchange="previewFile(event)">
+    </div>
 
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
+    <div class="form-grid">
 
-        .detail-box {
-            padding: 14px;
-            border-radius: 10px;
-            background: #f9fafb;
-            border: 1px solid #eee;
-            transition: 0.2s;
-        }
-
-        .detail-box:hover {
-            background: #f3f4f6;
-        }
-
-        .label {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .value {
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
-            margin-top: 4px;
-        }
-
-        .price {
-            font-weight: 600;
-            color: #111;
-        }
-
-        .footer-actions {
-            margin-top: 30px;
-            display: flex;
-            justify-content: flex-start;
-        }
-
-        .btn-back {
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            color: #555;
-            text-decoration: none;
-            font-size: 14px;
-            transition: 0.2s;
-            background: #f8f9fa;
-        }
-
-        .btn-back:hover {
-            background: #374151;
-        }
-
-        @media(max-width:768px) {
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-
-    <div class="detail-container">
-
-        <div class="detail-header">
-            <h3 class="text-lg font-semibold">
-                📦 Detail Asset
-            </h3>
-
-            <div class="badge-code">
-                {{ $item->code }}
-            </div>
+        <div class="form-group">
+            <label>Kode</label>
+            <input type="text" name="code" value="{{ old('code', $item->code) }}">
         </div>
 
-        <div class="photo-box">
-            @if($item->photo)
-                <img src="https://marketing-api.outclass.id/assets/images/items/{{ $item->photo }}">
-            @else
-                <div class="no-photo">Tidak ada foto</div>
-            @endif
+        <div class="form-group">
+            <label>Nama</label>
+            <input type="text" name="name" value="{{ old('name', $item->name) }}">
         </div>
 
-        <div class="detail-grid">
-
-            <div class="detail-box">
-                <div class="label">Nama Barang</div>
-                <div class="value">{{ $item->name }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Harga Beli</div>
-                <div class="value price">Rp {{ number_format($item->buy_price) }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Harga Jual</div>
-                <div class="value price">Rp {{ number_format($item->sell_price_estimate) }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Deskripsi</div>
-                <div class="value">{{ $item->description ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Garansi</div>
-                <div class="value">{{ $item->warranty ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Quantity</div>
-                <div class="value">{{ $item->quantity }} {{ $item->unit }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Tanggal Pembayaran</div>
-                <div class="value">{{ $item->pay_date ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Tanggal Kedatangan</div>
-                <div class="value">{{ $item->arrival_date ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Kondisi</div>
-                <div class="value">{{ $item->condition->name ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Status</div>
-                <div class="value">{{ $item->status->name ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Kategori</div>
-                <div class="value">{{ $item->category->name ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Catatan</div>
-                <div class="value">{{ $item->note ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">PIC</div>
-                <div class="value">{{ $item->employee->full_name ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Supplier</div>
-                <div class="value">{{ $item->supplier->name ?? '-' }}</div>
-            </div>
-
-            <div class="detail-box">
-                <div class="label">Location</div>
-                <div class="value">{{ $item->location->name ?? '-' }}</div>
-            </div>
-
+        <div class="form-group">
+            <label>Harga Beli</label>
+            <input type="number" name="buy_price" value="{{ old('buy_price', $item->buy_price) }}">
         </div>
 
-        <div class="footer-actions">
-            <a href="{{ route('inventaris.index') }}" class="btn-back">
-                ← Kembali
-            </a>
+        <div class="form-group">
+            <label>Harga Jual</label>
+            <input type="number" name="sell_price_estimate" value="{{ old('sell_price_estimate', $item->sell_price_estimate) }}">
+        </div>
+
+        <div class="form-group full">
+            <label>Deskripsi</label>
+            <textarea name="description">{{ old('description', $item->description) }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Garansi</label>
+            <input type="text" name="warranty" value="{{ old('warranty', $item->warranty) }}">
+        </div>
+
+        <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" name="quantity" value="{{ old('quantity', $item->quantity) }}">
+        </div>
+
+        <div class="form-group">
+            <label>Unit</label>
+            <input type="text" name="unit" value="{{ old('unit', $item->unit) }}">
+        </div>
+
+        <div class="form-group">
+            <label>Tanggal Bayar</label>
+            <input type="date" name="pay_date" value="{{ old('pay_date', $item->pay_date) }}">
+        </div>
+
+        <div class="form-group">
+            <label>Tanggal Datang</label>
+            <input type="date" name="arrival_date" value="{{ old('arrival_date', $item->arrival_date) }}">
+        </div>
+
+        <div class="form-group full">
+            <label>Catatan</label>
+            <textarea name="note">{{ old('note', $item->note) }}</textarea>
+        </div>
+
+        {{-- RELASI --}}
+        <div class="form-group">
+            <label>Employee</label>
+            <select name="employee_id">
+                @foreach($employees as $emp)
+                    <option value="{{ $emp->id }}"
+                        {{ old('employee_id', $item->employee_id) == $emp->id ? 'selected' : '' }}>
+                        {{ $emp->full_name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Location</label>
+            <select name="location_id">
+                @foreach($locations as $loc)
+                    <option value="{{ $loc->id }}"
+                        {{ old('location_id', $item->location_id) == $loc->id ? 'selected' : '' }}>
+                        {{ $loc->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            <select name="category_id">
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}"
+                        {{ old('category_id', $item->category_id) == $cat->id ? 'selected' : '' }}>
+                        {{ $cat->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Condition</label>
+            <select name="item_condition_id">
+                @foreach($conditions as $cond)
+                    <option value="{{ $cond->id }}"
+                        {{ old('item_condition_id', $item->item_condition_id) == $cond->id ? 'selected' : '' }}>
+                        {{ $cond->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <select name="item_status_id">
+                @foreach($statuses as $stat)
+                    <option value="{{ $stat->id }}"
+                        {{ old('item_status_id', $item->item_status_id) == $stat->id ? 'selected' : '' }}>
+                        {{ $stat->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Supplier</label>
+            <select name="supplier_id">
+                @foreach($suppliers as $sup)
+                    <option value="{{ $sup->id }}"
+                        {{ old('supplier_id', $item->supplier_id) == $sup->id ? 'selected' : '' }}>
+                        {{ $sup->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
     </div>
+
+    <div class="footer-actions">
+        <a href="{{ route('inventaris.index') }}" class="btn-back">
+            ← Kembali
+        </a>
+
+        <button type="submit" class="btn-submit">
+            💾 Update
+        </button>
+    </div>
+
+</form>
+
+</div>
+</div>
+
+<script>
+function previewFile(event) {
+    const image = document.getElementById('previewImage');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.style.display = 'block';
+}
+</script>
 
 @endsection

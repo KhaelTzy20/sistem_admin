@@ -1,0 +1,88 @@
+.peminjaman-show-page .title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.peminjaman-show-page .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.peminjaman-show-page .right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.peminjaman-show-page .card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.peminjaman-show-page .card-header {
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+}
+
+.peminjaman-show-page .badge {
+    background: #e74c3c;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.peminjaman-show-page .photo-box {
+    padding: 15px;
+    text-align: center;
+}
+
+.peminjaman-show-page img {
+    max-width: 150px;
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+.peminjaman-show-page .no-photo {
+    background: #eee;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.peminjaman-show-page .detail-list {
+    padding: 15px;
+}
+
+.peminjaman-show-page .row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding: 6px 0;
+    font-size: 14px;
+}
+
+.peminjaman-show-page .row.column {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.peminjaman-show-page .status.dipinjam {
+    color: #e74c3c;
+}
+
+.peminjaman-show-page .status.dikembalikan {
+    color: #27ae60;
+}
+
+@media (max-width: 768px) {
+    .peminjaman-show-page .grid-container {
+        grid-template-columns: 1fr;
+    }
+}

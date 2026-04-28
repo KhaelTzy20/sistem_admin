@@ -1,14 +1,18 @@
 @extends('layouts.app')
 @section('title', 'Employees')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/pages/employees.css') }}">
+@endpush
+
 @section('content')
 <div class="employee-page">
 
     {{-- HEADER --}}
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-        <h3 style="font-size:18px; font-weight:600;">👨‍💼 Data Employee</h3>
+    <div class="page-header">
+        <h3>👨‍💼 Data Employee</h3>
 
-        <a href="/employees/create" class="btn-add">
+        <a href="/employees/create" class="btn btn-primary">
             + Tambah Employee
         </a>
     </div>
@@ -16,12 +20,14 @@
     {{-- SEARCH --}}
     <form method="GET" action="/employees" class="search-box">
 
-        <input type="text" name="search" placeholder="Cari Nama, KTP, Divisi, Status..." value="{{ request('search') }}">
+        <input type="text" name="search"
+            placeholder="Cari Nama, KTP, Divisi, Status..."
+            value="{{ request('search') }}">
 
-        <button type="submit">Cari</button>
+        <button type="submit" class="btn btn-primary">Cari</button>
 
         @if(request('search'))
-            <a href="/employees" class="btn-add" style="background:#7f8c8d;">
+            <a href="/employees" class="btn btn-secondary">
                 Reset
             </a>
         @endif
@@ -54,7 +60,7 @@
                         <td>{{ \Carbon\Carbon::parse($e->start_work_date)->format('d M Y') }}</td>
                         <td>
                             <a href="{{ route('employees.show', $e->id) }}"
-                                style="background:#34495e; padding:6px 10px; border-radius:5px; color:white; text-decoration:none;">
+                                class="btn btn-dark btn-sm">
                                 🔍
                             </a>
                         </td>
@@ -65,16 +71,16 @@
     </div>
 
     {{-- PAGINATION --}}
-    <div class="custom-pagination">
+    <div class="pagination">
 
-        {{-- PREV --}}
         @if ($employees->onFirstPage())
             <span class="disabled">← Prev</span>
         @else
-            <a href="{{ $employees->previousPageUrl() }}">← Prev</a>
+            <a href="{{ $employees->appends(request()->query())->previousPageUrl() }}">
+                ← Prev
+            </a>
         @endif
 
-        {{-- PAGES --}}
         @for ($i = 1; $i <= $employees->lastPage(); $i++)
             @if ($i == $employees->currentPage())
                 <span class="active">{{ $i }}</span>
@@ -87,14 +93,15 @@
             @endif
         @endfor
 
-        {{-- NEXT --}}
         @if ($employees->hasMorePages())
-            <a href="{{ $employees->nextPageUrl() }}">Next →</a>
+            <a href="{{ $employees->appends(request()->query())->nextPageUrl() }}">
+                Next →
+            </a>
         @else
             <span class="disabled">Next →</span>
         @endif
 
     </div>
-    </div>
 
+</div>
 @endsection
