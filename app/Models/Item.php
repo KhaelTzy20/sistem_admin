@@ -65,6 +65,10 @@ class Item extends Model
     {
         return $this->belongsTo(Status::class, 'item_status_id');
     }
+    public function item_status()
+    {
+        return $this->belongsTo(ItemStatus::class, 'item_status_id');
+    }
     public function supplier()
     {
          return $this->belongsTo(Supplier::class);

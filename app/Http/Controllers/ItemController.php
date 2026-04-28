@@ -32,7 +32,7 @@ class ItemController extends Controller
     }
 
     $items = $query->with(['location', 'employee'])
-                   ->latest()
+                   ->orderBy('id')
                    ->paginate(10);
 
     return view('inventaris.index', compact('items'));
@@ -53,6 +53,7 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
+    
         $request->validate([
             'code' => 'required',
             'name' => 'required',
@@ -62,19 +63,25 @@ class ItemController extends Controller
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:10240'
         ]);
 
-        $data = $request->only([
-            'code',
-            'name',
-            'quantity',
-            'pay_date',
-            'arrival_date',
-            'location_id',
-            'employee_id',
-            'category_id',
-            'item_condition_id',
-            'item_status_id',
-            'supplier_id'
-        ]);
+       $data = $request->only([
+    'code',
+    'name',
+    'buy_price',
+    'sell_price_estimate',
+    'description',
+    'warranty',
+    'quantity',
+    'unit',
+    'pay_date',
+    'arrival_date',
+    'note',
+    'location_id',
+    'employee_id',
+    'category_id',
+    'item_condition_id',
+    'item_status_id',
+    'supplier_id'
+]);
 
         // upload foto
         // if ($request->hasFile('photo')) {
@@ -123,6 +130,7 @@ class ItemController extends Controller
 
     public function update(Request $request, $id)
     {
+    
         $request->validate([
             'code' => 'required',
             'name' => 'required',

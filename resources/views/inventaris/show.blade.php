@@ -26,7 +26,6 @@
 
     {{-- DETAIL --}}
     <div class="detail-grid">
-
         @php
             $details = [
                 'Nama Barang' => $item->name,
@@ -38,7 +37,7 @@
                 'Tanggal Pembayaran' => $item->pay_date ?? '-',
                 'Tanggal Kedatangan' => $item->arrival_date ?? '-',
                 'Kondisi' => $item->condition->name ?? '-',
-                'Status' => $item->status->name ?? '-',
+                'Status' => $item->item_status->name ?? '-',
                 'Kategori' => $item->category->name ?? '-',
                 'Catatan' => $item->note ?? '-',
                 'PIC' => $item->employee->full_name ?? '-',

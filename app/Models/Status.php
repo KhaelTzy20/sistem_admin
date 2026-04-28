@@ -13,6 +13,6 @@ class Status extends Model
     protected $fillable = ['name'];
 
     public function items(){
-        return $this->hasMany(Item::class);
+        return $this->belongsTo(Item::class, 'id', 'item_status_id');
     }
 }
