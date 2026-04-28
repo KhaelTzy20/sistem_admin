@@ -27,7 +27,8 @@
         <h2 class="text-xl font-bold mb-8">Admin Panel</h2>
 
         <ul class="space-y-2 text-sm">
-            <li>
+        @if(in_array(auth()->user()->id, ['880', '13']))
+        <li>
                 <a href="/employees"
                     class="menu-item {{ request()->is('employees*') ? 'menu-active' : '' }}">
                     <i data-lucide="users"></i>
@@ -42,7 +43,7 @@
                     Inventaris
                 </a>
             </li>
-
+@endif
             <li>
                 <a href="/peminjaman"
                     class="menu-item {{ request()->is('peminjaman*') ? 'menu-active' : '' }}">
