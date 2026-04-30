@@ -27,7 +27,8 @@
         <h2 class="text-xl font-bold mb-8">Admin Panel</h2>
 
         <ul class="space-y-2 text-sm">
-        @if(in_array(auth()->user()->id, ['880', '13','739']))
+        @if(in_array(auth()->user()->id, ['880', '13','947
+']))
         <li>
                 <a href="/employees"
                     class="menu-item {{ request()->is('employees*') ? 'menu-active' : '' }}">
