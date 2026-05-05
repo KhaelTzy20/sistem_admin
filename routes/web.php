@@ -27,7 +27,9 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm']);
 Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
 
-Route::get('/employees', [EmployeeController::class, 'index'])->middleware('auth');
+Route::get('/employees', [EmployeeController::class, 'index'])
+    ->name('employees.index')
+    ->middleware('auth');
 Route::get('/employees/create', [EmployeeController::class, 'create'])->middleware('auth');
 Route::post('/employees', [EmployeeController::class, 'store'])->middleware('auth');
 Route::get('/employees/tabungan', [TabunganController::class, 'index'])
