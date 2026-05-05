@@ -9,11 +9,13 @@ use App\Models\Division;
 use App\Models\WorkStatus;
 use App\Models\MarriageStatus;
 use App\Models\EmployeeKinerja;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    use SoftDeletes;
     protected $table = 'employees';
 
     protected $fillable = [
