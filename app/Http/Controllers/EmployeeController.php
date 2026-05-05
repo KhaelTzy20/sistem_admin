@@ -63,7 +63,7 @@ class EmployeeController extends Controller
             'genders' => Gender::all(),
             'positions' => Position::all(),
             'divisions' => Division::all(),
-            'workStatuses' => WorkStatus::all(),
+            'workStatus' => WorkStatus::all(),
             'marriageStatuses' => MarriageStatus::all(),
         ]);
     }

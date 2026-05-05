@@ -184,7 +184,7 @@
                 <label>Status Kerja</label>
                 <select name="work_status_id">
                     <option value="">-- Status Kerja --</option>
-                    @foreach($workStatuses as $w)
+                    @foreach($workStatus as $w)
                         <option value="{{ $w->id }}" {{ old('work_status_id') == $w->id ? 'selected' : '' }}>
                             {{ $w->name }}
                         </option>
