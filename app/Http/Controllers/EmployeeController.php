@@ -107,7 +107,7 @@ class EmployeeController extends Controller
 
             'division_id' => 'required|exists:divisions,id',
             'position_id' => 'required|exists:positions,id',
-            'work_status_id' => 'required|exists:work_statuses,id',
+            'work_status_id' => 'required|exists:work_status,id',
 
             'start_work_date' => 'required|date',
         ]);
