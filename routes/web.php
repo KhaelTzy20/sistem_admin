@@ -6,6 +6,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\TabunganController;
 
 Route::get('/test', function () {
     return 'OK';
@@ -29,6 +30,10 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
 Route::get('/employees', [EmployeeController::class, 'index'])->middleware('auth');
 Route::get('/employees/create', [EmployeeController::class, 'create'])->middleware('auth');
 Route::post('/employees', [EmployeeController::class, 'store'])->middleware('auth');
+Route::get('/employees/tabungan', [TabunganController::class, 'index'])
+    ->name('employees.tabungan')
+    ->middleware('auth');
+
 Route::get('/employees/{id}', [EmployeeController::class, 'show'])
     ->name('employees.show')
     ->middleware('auth');

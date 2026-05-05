@@ -23,3 +23,16 @@ body {
 .menu-active {
     background: #e74c3c;
 }
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.1);
+}

@@ -20,6 +20,13 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
+<script>
+function toggleSubmenu(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('hidden');
+}
+</script>
+
 <body class="bg-gray-100 flex">
 
     {{-- SIDEBAR --}}
@@ -30,13 +37,39 @@
         @if(in_array(auth()->user()->id, ['880', '13','947
 ']))
         <li>
-                <a href="/employees"
-                    class="menu-item {{ request()->is('employees*') ? 'menu-active' : '' }}">
-                    <i data-lucide="users"></i>
-                    Employee
-                </a>
-            </li>
+    <button onclick="toggleSubmenu('employeeMenu')"
+        class="menu-item w-full flex justify-between items-center {{ request()->is('employees*') ? 'menu-active' : '' }}">
 
+        <div class="flex items-center gap-2">
+            <i data-lucide="users"></i>
+            Employee
+        </div>
+
+        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+    </button>
+
+    {{-- SUB MENU --}}
+    <ul id="employeeMenu"
+        class="ml-6 mt-2 space-y-1 {{ request()->is('employees*') ? '' : 'hidden' }}">
+
+        <li>
+            <a href="/employees"
+                class="block text-sm px-3 py-2 rounded hover:bg-white/10
+                {{ request()->is('employees') ? 'menu-active' : '' }}">
+                Data Employee
+            </a>
+        </li>
+
+        <li>
+            <a href="/employees/tabungan"
+                class="block text-sm px-3 py-2 rounded hover:bg-white/10
+                {{ request()->is('employees/tabungan*') ? 'menu-active' : '' }}">
+                Tabungan
+            </a>
+        </li>
+
+    </ul>
+</li>
             <li>
                 <a href="/inventaris"
                     class="menu-item {{ request()->is('inventaris*') ? 'menu-active' : '' }}">

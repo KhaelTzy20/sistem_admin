@@ -8,6 +8,7 @@ use App\Models\Position;
 use App\Models\Division;
 use App\Models\WorkStatus;
 use App\Models\MarriageStatus;
+use App\Models\EmployeeKinerja;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -124,7 +125,14 @@ class Employee extends Model
         return $this->belongsTo(Division::class, 'division_id');
     }
 
-
+    public function kinerja()
+    {
+        return $this->hasOne(EmployeeKinerja::class);
+    }
+public function warnings()
+{
+    return $this->hasMany(EmployeeWarning::class);
+}
     // Accessor 
     public function getFullNameAttribute()
     {
