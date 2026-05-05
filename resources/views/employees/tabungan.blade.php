@@ -37,6 +37,7 @@
                     <th>Nama Karyawan</th>
                     <th>Surat Peringatan</th>
                     <th>Nominal Tabungan</th>
+                     <th>Action</th>
                 </tr>
             </thead>
 
@@ -47,12 +48,16 @@
                         <td>{{ $e->first_name }} {{ $e->last_name }}</td>
 
                         <td>
-                            {{-- contoh dummy --}}
-                            {{ $e->warning_letter ?? '-' }}
+                            SP {{ optional($e->warningRel)->level ?? '0' }}
                         </td>
 
                         <td>
-                            Rp {{ number_format($e->saving_amount ?? 0, 0, ',', '.') }}
+                            Rp {{ number_format(optional($e->kinerjaRel)->nominal_tabungan ?? 0, 0, ',', '.') }}
+                        </td>
+                          <td>
+                            <a href="{{ route('tabungan.edit', $e->id) }}" class="btn-edit">
+                                ✏️ Edit
+                            </a>
                         </td>
                     </tr>
                 @empty

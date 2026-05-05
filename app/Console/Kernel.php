@@ -14,9 +14,9 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected function schedule(Schedule $schedule)
-    {
-        // $schedule->command('inspire')->hourly();
-    }
+{
+    $schedule->command('warnings:reset')->yearlyOn(1, 0);
+}
 
     /**
      * Register the commands for the application.

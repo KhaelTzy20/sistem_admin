@@ -35,7 +35,14 @@ Route::post('/employees', [EmployeeController::class, 'store'])->middleware('aut
 Route::get('/employees/tabungan', [TabunganController::class, 'index'])
     ->name('employees.tabungan')
     ->middleware('auth');
+Route::get('/employees/tabungan/{id}/edit', [TabunganController::class, 'edit'])
+    ->name('tabungan.edit')
+    ->middleware('auth');
 
+Route::post('/employees/tabungan/{id}', [TabunganController::class, 'update'])
+    ->name('tabungan.update')
+    ->middleware('auth');
+    
 Route::get('/employees/{id}', [EmployeeController::class, 'show'])
     ->name('employees.show')
     ->middleware('auth');

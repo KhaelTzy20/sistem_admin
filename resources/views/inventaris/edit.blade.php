@@ -4,6 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/pages/inventaris-edit.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -103,7 +104,7 @@
         {{-- RELASI --}}
         <div class="form-group">
             <label>Employee</label>
-            <select name="employee_id">
+            <select name="employee_id" class="select2">
                 @foreach($employees as $emp)
                     <option value="{{ $emp->id }}"
                         {{ old('employee_id', $item->employee_id) == $emp->id ? 'selected' : '' }}>
@@ -163,7 +164,7 @@
 
         <div class="form-group">
             <label>Supplier</label>
-            <select name="supplier_id">
+            <select name="supplier_id" class="select2">
                 @foreach($suppliers as $sup)
                     <option value="{{ $sup->id }}"
                         {{ old('supplier_id', $item->supplier_id) == $sup->id ? 'selected' : '' }}>
@@ -197,5 +198,20 @@ function previewFile(event) {
     image.style.display = 'block';
 }
 </script>
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('.select2').select2({
+        placeholder: "-- Pilih --",
+        allowClear: true,
+        width: '100%'
+    });
+});
+</script>
+@endpush
 
 @endsection

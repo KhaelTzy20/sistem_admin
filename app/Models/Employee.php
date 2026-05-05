@@ -164,4 +164,14 @@ public function warnings()
     {
         return $this->divisionRel->name ?? '-';
     }
+
+    public function kinerjaRel()
+    {
+        return $this->hasOne(\App\Models\EmployeeKinerja::class);
+    }
+
+    public function warningRel()
+    {
+        return $this->hasOne(\App\Models\EmployeeWarning::class);
+    }
 }
