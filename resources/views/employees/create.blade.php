@@ -136,7 +136,7 @@
             <div class="form-group">
                 <select name="marriage_status_id">
                     <option value="">-- Status Pernikahan --</option>
-                    @foreach($marriageStatuses as $m)
+                    @foreach($marriageStatus as $m)
                         <option value="{{ $m->id }}" {{ old('marriage_status_id') == $m->id ? 'selected' : '' }}>
                             {{ $m->name }}
                         </option>
