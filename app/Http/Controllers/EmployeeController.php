@@ -64,7 +64,7 @@ class EmployeeController extends Controller
             'positions' => Position::all(),
             'divisions' => Division::all(),
             'workStatus' => WorkStatus::all(),
-            'marriageStatuses' => MarriageStatus::all(),
+            'marriageStatus' => MarriageStatus::all(),
         ]);
     }
 
@@ -102,7 +102,7 @@ class EmployeeController extends Controller
             'phone_number' => 'nullable',
             'corporate_phone_number' => 'nullable',
 
-            'marriage_status_id' => 'required|exists:marriage_statuses,id',
+            'marriage_status_id' => 'required|exists:marriage_status,id',
             'total_child' => 'required|integer|min:0',
 
             'division_id' => 'required|exists:divisions,id',
