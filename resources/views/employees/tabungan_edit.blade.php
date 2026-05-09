@@ -43,7 +43,8 @@
             <label>Nominal Tabungan</label>
             <input type="number" name="nominal"
                 value="{{ old('nominal', $kinerja->nominal_tabungan ?? 0) }}"
-                placeholder="Masukkan nominal">
+                placeholder="Masukkan nominal
+                            Contoh: 5000 atau -5000">
         </div>
 
         {{-- SP --}}

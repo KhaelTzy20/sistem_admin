@@ -7,6 +7,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\TabunganController;
+use App\Http\Controllers\EquityController;
 
 Route::get('/test', function () {
     return 'OK';
@@ -42,7 +43,18 @@ Route::get('/employees/tabungan/{id}/edit', [TabunganController::class, 'edit'])
 Route::post('/employees/tabungan/{id}', [TabunganController::class, 'update'])
     ->name('tabungan.update')
     ->middleware('auth');
-    
+
+Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])
+    ->name('employees.edit')
+    ->middleware('auth');
+
+Route::put('/employees/{id}', [EmployeeController::class, 'update'])
+    ->name('employees.update')
+    ->middleware('auth');
+
+Route::resource('/employees/equity', EquityController::class)
+    ->middleware('auth');
+
 Route::get('/employees/{id}', [EmployeeController::class, 'show'])
     ->name('employees.show')
     ->middleware('auth');

@@ -11,7 +11,8 @@ class TabunganController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Employee::with([
+        $query = Employee::where('status', 1)
+        ->with([
             'kinerjaRel',
             'warningRel' => function ($q) {
                 $q->where('year', date('Y'));
@@ -80,7 +81,7 @@ class TabunganController extends Controller
 
         // 🔥 FIX UTAMA: mapping ke kolom database
         $kinerja->update([
-            'nominal_tabungan' => $request->nominal ?? 0
+            'nominal_tabungan' => $kinerja->nominal_tabungan + ($request->nominal ?? 0)
         ]);
 
         $warning->update([

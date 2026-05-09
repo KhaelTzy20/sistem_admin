@@ -24,6 +24,7 @@ class EmployeeController extends Controller
         ]);
 
         if ($search = $request->search) {
+
             $query->where(function ($q) use ($search) {
 
                 if (is_numeric($search)) {
@@ -33,22 +34,27 @@ class EmployeeController extends Controller
 
                 $q->orWhere('first_name', 'like', "%$search%")
                   ->orWhere('last_name', 'like', "%$search%")
-                  ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$search%"]);
+                  ->orWhereRaw(
+                      "CONCAT(first_name, ' ', last_name) LIKE ?",
+                      ["%$search%"]
+                  );
             })
 
-            // RELASI SEARCH (SUDAH FIX)
-            ->orWhereHas('divisionRel', fn($q) =>
-                $q->where('name', 'like', "%$search%")
-            )
-            ->orWhereHas('workStatusRel', fn($q) =>
-                $q->where('name', 'like', "%$search%")
-            )
-            ->orWhereHas('genderRel', fn($q) =>
-                $q->where('name', 'like', "%$search%")
-            )
-            ->orWhereHas('positionRel', fn($q) =>
-                $q->where('name', 'like', "%$search%")
-            );
+            ->orWhereHas('divisionRel', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            })
+
+            ->orWhereHas('workStatusRel', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            })
+
+            ->orWhereHas('genderRel', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            })
+
+            ->orWhereHas('positionRel', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            });
         }
 
         $employees = $query->latest()->paginate(10);
@@ -66,19 +72,6 @@ class EmployeeController extends Controller
             'workStatus' => WorkStatus::all(),
             'marriageStatus' => MarriageStatus::all(),
         ]);
-    }
-
-    public function show($id)
-    {
-        $employee = Employee::with([
-            'genderRel',
-            'positionRel',
-            'divisionRel',
-            'workStatusRel',
-            'marriageStatusRel'
-        ])->findOrFail($id);
-
-        return view('employees.show', compact('employee'));
     }
 
     public function store(Request $request)
@@ -110,11 +103,75 @@ class EmployeeController extends Controller
             'work_status_id' => 'required|exists:work_status,id',
 
             'start_work_date' => 'required|date',
+
+            'status' => 'required|in:0,1',
         ]);
 
-        Employee::create($request->all());
+        Employee::create([
+    ...$request->all(),
+    'status' => 1
+]);
 
         return redirect()->route('employees.index')
             ->with('success', 'Data berhasil ditambahkan');
+    }
+
+    public function edit($id)
+    {
+        $employee = Employee::findOrFail($id);
+
+        return view('employees.edit', [
+            'employee' => $employee,
+            'users' => User::select('id', 'name', 'email')->get(),
+            'genders' => Gender::all(),
+            'positions' => Position::all(),
+            'divisions' => Division::all(),
+            'workStatuses' => WorkStatus::all(),
+        'marriageStatuses' => MarriageStatus::all(),
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $employee = Employee::findOrFail($id);
+
+        $request->validate([
+            'id_number' => 'required',
+            'employee_id_number' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+
+            'gender_id' => 'required',
+            'place_of_birth' => 'required',
+            'date_of_birth' => 'required|date',
+
+            'main_address' => 'required',
+
+            'division_id' => 'required',
+            'position_id' => 'required',
+            'work_status_id' => 'required',
+
+            'start_work_date' => 'required|date',
+
+            'status' => 'required|in:0,1',
+        ]);
+
+        $employee->update($request->all());
+
+        return redirect()->route('employees.index')
+            ->with('success', 'Employee berhasil diupdate');
+    }
+
+    public function show($id)
+    {
+        $employee = Employee::with([
+            'genderRel',
+            'positionRel',
+            'divisionRel',
+            'workStatusRel',
+            'marriageStatusRel'
+        ])->findOrFail($id);
+
+        return view('employees.show', compact('employee'));
     }
 }
