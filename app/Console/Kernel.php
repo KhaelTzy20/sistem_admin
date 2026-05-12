@@ -16,6 +16,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
 {
     $schedule->command('warnings:reset')->yearlyOn(1, 0);
+    $schedule->command('employee:add-savings')
+        ->monthlyOn(1, '00:00');
 }
 
     /**

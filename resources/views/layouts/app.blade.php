@@ -68,6 +68,15 @@ function toggleSubmenu(id) {
             </a>
         </li>
 
+         {{-- EQUITY --}}
+    <li>
+        <a href="/employees/equity"
+            class="block text-sm px-3 py-2 rounded hover:bg-white/10
+            {{ request()->is('employees/equity*') ? 'menu-active' : '' }}">
+            Equity
+        </a>
+    </li>
+
     </ul>
 </li>
             <li>

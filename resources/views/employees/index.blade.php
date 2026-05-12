@@ -45,7 +45,7 @@
                     <th>Divisi</th>
                     <th>Status</th>
                     <th>Tanggal Masuk</th>
-                    <th>Detail</th>
+                    <th>Action</th>
                 </tr>
             </thead>
 
@@ -58,12 +58,21 @@
                         <td>{{ $e->divisionRel->name ?? '-' }}</td>
                         <td>{{ $e->workStatusRel->name ?? '-' }}</td>
                         <td>{{ \Carbon\Carbon::parse($e->start_work_date)->format('d M Y') }}</td>
-                        <td>
-                            <a href="{{ route('employees.show', $e->id) }}"
-                                class="btn btn-dark btn-sm">
-                                🔍
-                            </a>
-                        </td>
+<td style="display:flex; gap:6px;">
+
+    {{-- DETAIL --}}
+    <a href="{{ route('employees.show', $e->id) }}"
+        class="btn btn-dark btn-sm">
+        🔍
+    </a>
+
+    {{-- EDIT --}}
+    <a href="{{ route('employees.edit', $e->id) }}"
+        class="btn btn-primary btn-sm">
+        ✏️
+    </a>
+
+</td>
                     </tr>
                 @endforeach
             </tbody>

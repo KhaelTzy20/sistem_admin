@@ -97,6 +97,21 @@
                 <b>{{ $employee->work_status_label }}</b>
             </div>
 
+<div class="detail-row">
+    <span>Status Karyawan</span>
+
+    <b>
+        @if($employee->status == 1)
+            <span class="badge-success">
+                Aktif
+            </span>
+        @else
+            <span class="badge-danger">
+                Resign
+            </span>
+        @endif
+    </b>
+</div>
             <div class="detail-row">
                 <span>Tanggal Masuk</span>
                 <b>

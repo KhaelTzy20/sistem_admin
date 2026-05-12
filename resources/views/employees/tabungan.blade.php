@@ -35,6 +35,7 @@
                 <tr>
                     <th>No</th>
                     <th>Nama Karyawan</th>
+                    <th>Masa Kerja</th>
                     <th>Surat Peringatan</th>
                     <th>Nominal Tabungan</th>
                      <th>Action</th>
@@ -42,32 +43,76 @@
             </thead>
 
             <tbody>
-                @forelse ($employees as $i => $e)
-                    <tr>
-                        <td>{{ $employees->firstItem() + $i }}</td>
-                        <td>{{ $e->first_name }} {{ $e->last_name }}</td>
+    @forelse ($employees as $i => $e)
+        <tr>
+            <td>{{ $employees->firstItem() + $i }}</td>
 
-                        <td>
-                            SP {{ optional($e->warningRel)->level ?? '0' }}
-                        </td>
+            <td>
+                {{ $e->first_name }} {{ $e->last_name }}
+            </td>
 
-                        <td>
-                            Rp {{ number_format(optional($e->kinerjaRel)->nominal_tabungan ?? 0, 0, ',', '.') }}
-                        </td>
-                          <td>
-                            <a href="{{ route('tabungan.edit', $e->id) }}" class="btn-edit">
-                                ✏️ Edit
-                            </a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="text-center">
-                            Tidak ada data
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
+            {{-- MASA KERJA --}}
+            <td>
+    @if($e->start_work_date)
+
+        @php
+            $start = \Carbon\Carbon::parse($e->start_work_date);
+
+            $totalMonth =
+                (now()->year - $start->year) * 12 +
+                (now()->month - $start->month);
+
+            $years = floor($totalMonth / 12);
+            $months = $totalMonth % 12;
+        @endphp
+
+        @if($years > 0)
+            {{ $years }} Tahun
+        @endif
+
+        @if($months > 0)
+            {{ $months }} Bulan
+        @endif
+
+        @if($years == 0 && $months == 0)
+            0 Bulan
+        @endif
+
+    @else
+        -
+    @endif
+</td>
+
+            {{-- SP --}}
+            <td>
+                @if($e->warningRel && $e->warningRel->level > 0)
+                    SP {{ $e->warningRel->level }}
+                @else
+                    SP 0
+                @endif
+            </td>
+
+            {{-- TABUNGAN --}}
+            <td>
+                Rp {{ number_format($e->kinerjaRel->nominal_tabungan ?? 0, 0, ',', '.') }}
+            </td>
+
+            {{-- ACTION --}}
+            <td>
+                <a href="{{ route('tabungan.edit', $e->id) }}"
+                    class="btn btn-dark btn-sm">
+                    ✏️ Edit
+                </a>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="6" class="text-center">
+                Tidak ada data
+            </td>
+        </tr>
+    @endforelse
+</tbody>
         </table>
     </div>
 
