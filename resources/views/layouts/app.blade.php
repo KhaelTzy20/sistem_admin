@@ -77,6 +77,15 @@ function toggleSubmenu(id) {
         </a>
     </li>
 
+    <li>
+    <a href="/employees/summary"
+        class="block text-sm px-3 py-2 rounded hover:bg-white/10
+        {{ request()->is('employees/summary*') ? 'menu-active' : '' }}">
+
+        Financial Summary
+    </a>
+</li>
+
     </ul>
 </li>
             <li>

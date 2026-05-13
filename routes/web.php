@@ -8,6 +8,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\EquityController;
+use App\Http\Controllers\SummaryController;
 
 Route::get('/test', function () {
     return 'OK';
@@ -53,6 +54,10 @@ Route::put('/employees/{id}', [EmployeeController::class, 'update'])
     ->middleware('auth');
 
 Route::resource('/employees/equity', EquityController::class)
+    ->middleware('auth');
+
+Route::get('/employees/summary', [SummaryController::class, 'index'])
+    ->name('employees.summary')
     ->middleware('auth');
 
 Route::get('/employees/{id}', [EmployeeController::class, 'show'])

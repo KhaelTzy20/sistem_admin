@@ -94,7 +94,7 @@
 
             {{-- TABUNGAN --}}
             <td>
-                Rp {{ number_format($e->kinerjaRel->nominal_tabungan ?? 0, 0, ',', '.') }}
+                Rp {{ number_format(optional($e->kinerjaRel)->nominal_tabungan ?? 0, 0, ',', '.') }}
             </td>
 
             {{-- ACTION --}}

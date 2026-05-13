@@ -15,7 +15,9 @@ class AddMonthlyEmployeeSavings extends Command
 
     public function handle()
     {
-        $employees = Employee::where('status', 1)->get();
+        $employees = Employee::where('status', 1)
+        ->where('division_id', '!=', 15)
+        ->get();
 
         foreach ($employees as $employee) {
 
@@ -27,11 +29,11 @@ class AddMonthlyEmployeeSavings extends Command
                 ->diffInMonths(now());
 
             // minimal 6 bulan kerja
-            if ($masaKerja >= 6) {
+            if ($masaKerja > 6) {
 
                 $kinerja = EmployeeKinerja::firstOrCreate(
                     ['employee_id' => $employee->id],
-                    ['nominal_tabungan' => 0]
+                    ['nominal_tabungan' => 500000]
                 );
 
                 $kinerja->increment('nominal_tabungan', 500000);

@@ -30,34 +30,38 @@ class EquityController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'company_name' => 'required',
-        'investment_amount' => 'required|numeric',
-        'profit_loss_amount' => 'required|numeric',
-        'note' => 'nullable',
-    ]);
+    {
+        $request->validate([
+            'company_name'       => 'required',
+            'investment_amount'  => 'required|numeric',
+            'profit_loss_amount' => 'nullable|numeric',
+            'note'               => 'nullable',
+        ]);
 
-    $roi = 0;
+        // default profit/loss = 0 jika kosong
+        $profitLoss = $request->profit_loss_amount ?? 0;
 
-    if ($request->investment_amount > 0) {
-        $roi = (
-            $request->profit_loss_amount
-            / $request->investment_amount
-        ) * 100;
+        // hitung ROI otomatis
+        $roi = 0;
+
+        if ($request->investment_amount > 0) {
+            $roi = (
+                $profitLoss / $request->investment_amount
+            ) * 100;
+        }
+
+        Equity::create([
+            'company_name'       => $request->company_name,
+            'investment_amount'  => $request->investment_amount,
+            'profit_loss_amount' => $profitLoss,
+            'roi_percentage'     => round($roi, 2),
+            'note'               => $request->note,
+        ]);
+
+        return redirect()
+            ->route('equity.index')
+            ->with('success', 'Data equity berhasil ditambahkan');
     }
-
-    Equity::create([
-        'company_name' => $request->company_name,
-        'investment_amount' => $request->investment_amount,
-        'profit_loss_amount' => $request->profit_loss_amount,
-        'roi_percentage' => round($roi, 2),
-        'note' => $request->note,
-    ]);
-
-    return redirect()->route('equity.index')
-        ->with('success', 'Data equity berhasil ditambahkan');
-}
 
     public function edit($id)
     {
@@ -70,36 +74,40 @@ class EquityController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $equity = Equity::findOrFail($id);
+    {
+        $equity = Equity::findOrFail($id);
 
-    $request->validate([
-        'company_name' => 'required',
-        'investment_amount' => 'required|numeric',
-        'profit_loss_amount' => 'required|numeric',
-        'note' => 'nullable',
-    ]);
+        $request->validate([
+            'company_name'       => 'required',
+            'investment_amount'  => 'required|numeric',
+            'profit_loss_amount' => 'nullable|numeric',
+            'note'               => 'nullable',
+        ]);
 
-    $roi = 0;
+        // default profit/loss = 0 jika kosong
+        $profitLoss = $request->profit_loss_amount ?? 0;
 
-    if ($request->investment_amount > 0) {
-        $roi = (
-            $request->profit_loss_amount
-            / $request->investment_amount
-        ) * 100;
+        // hitung ROI otomatis
+        $roi = 0;
+
+        if ($request->investment_amount > 0) {
+            $roi = (
+                $profitLoss / $request->investment_amount
+            ) * 100;
+        }
+
+        $equity->update([
+            'company_name'       => $request->company_name,
+            'investment_amount'  => $request->investment_amount,
+            'profit_loss_amount' => $profitLoss,
+            'roi_percentage'     => round($roi, 2),
+            'note'               => $request->note,
+        ]);
+
+        return redirect()
+            ->route('equity.index')
+            ->with('success', 'Data equity berhasil diupdate');
     }
-
-    $equity->update([
-        'company_name' => $request->company_name,
-        'investment_amount' => $request->investment_amount,
-        'profit_loss_amount' => $request->profit_loss_amount,
-        'roi_percentage' => round($roi, 2),
-        'note' => $request->note,
-    ]);
-
-    return redirect()->route('equity.index')
-        ->with('success', 'Data equity berhasil diupdate');
-}
 
     public function destroy($id)
     {

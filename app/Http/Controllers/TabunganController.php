@@ -12,12 +12,14 @@ class TabunganController extends Controller
     public function index(Request $request)
     {
         $query = Employee::where('status', 1)
-        ->with([
-            'kinerjaRel',
-            'warningRel' => function ($q) {
-                $q->where('year', date('Y'));
-            }
-        ]);
+    ->where('division_id', '!=', 14)
+    ->where('division_id', '!=', 15)
+    ->with([
+        'kinerjaRel',
+        'warningRel' => function ($q) {
+            $q->where('year', date('Y'));
+        }
+    ]);
 
         if ($request->search) {
             $search = strtolower($request->search);

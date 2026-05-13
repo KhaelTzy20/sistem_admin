@@ -122,9 +122,54 @@
     </div>
 
     {{-- PAGINATION --}}
-    <div class="pagination">
-        {{ $equities->links() }}
-    </div>
+<div class="pagination">
+
+    @if ($equities->onFirstPage())
+        <span class="disabled">← Prev</span>
+    @else
+        <a href="{{ $equities->appends(request()->query())->previousPageUrl() }}">
+            ← Prev
+        </a>
+    @endif
+
+    @for ($i = 1; $i <= $equities->lastPage(); $i++)
+
+        @if ($i == $equities->currentPage())
+
+            <span class="active">
+                {{ $i }}
+            </span>
+
+        @elseif (
+            $i <= 3 ||
+            $i > $equities->lastPage() - 2 ||
+            abs($i - $equities->currentPage()) <= 1
+        )
+
+            <a href="{{ $equities->appends(request()->query())->url($i) }}">
+                {{ $i }}
+            </a>
+
+        @elseif (
+            $i == 4 ||
+            $i == $equities->lastPage() - 2
+        )
+
+            <span>...</span>
+
+        @endif
+
+    @endfor
+
+    @if ($equities->hasMorePages())
+        <a href="{{ $equities->appends(request()->query())->nextPageUrl() }}">
+            Next →
+        </a>
+    @else
+        <span class="disabled">Next →</span>
+    @endif
+
+</div>
 
 </div>
 
