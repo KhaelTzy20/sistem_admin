@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Equity extends Model
 {
     protected $fillable = [
-        'company_name',
-        'investment_amount',
-        'roi_percentage',
-        'profit_loss_amount',
-        'note',
-    ];
+    'company_name',
+    'periode',
+    'investment_amount',
+    'profit_loss_amount',
+    'roi_percentage',
+    'note',
+];
 }

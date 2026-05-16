@@ -48,6 +48,42 @@
 
         </div>
 
+<div class="grid-2">
+
+    <div class="form-group">
+        <label>Bulan</label>
+
+        <select name="month">
+
+            @for($m = 1; $m <= 12; $m++)
+
+                <option value="{{ $m }}">
+                    {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                </option>
+
+            @endfor
+
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Tahun</label>
+
+        <select name="year">
+
+            @for($y = date('Y') + 1; $y >= 2024; $y--)
+
+                <option value="{{ $y }}">
+                    {{ $y }}
+                </option>
+
+            @endfor
+
+        </select>
+    </div>
+
+</div>
+
         <div class="form-group full">
     <label>Catatan</label>
 

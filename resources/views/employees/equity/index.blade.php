@@ -21,17 +21,53 @@
     {{-- SEARCH --}}
     <form method="GET" class="search-box">
 
-        <input
-            type="text"
-            name="search"
-            placeholder="Cari perusahaan..."
-            value="{{ request('search') }}">
+    <input
+        type="text"
+        name="search"
+        placeholder="Cari perusahaan..."
+        value="{{ request('search') }}">
 
-        <button type="submit" class="btn btn-primary">
-            Cari
-        </button>
+    {{-- BULAN --}}
+    <select name="month">
 
-    </form>
+        <option value="all">Semua Bulan</option>
+
+        @for($m = 1; $m <= 12; $m++)
+
+            <option value="{{ $m }}"
+                {{ request('month') == $m ? 'selected' : '' }}>
+
+                {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+
+            </option>
+
+        @endfor
+
+    </select>
+
+    {{-- TAHUN --}}
+    <select name="year">
+
+        <option value="all">Semua Tahun</option>
+
+        @for($y = date('Y'); $y >= 2024; $y--)
+
+            <option value="{{ $y }}"
+                {{ request('year') == $y ? 'selected' : '' }}>
+
+                {{ $y }}
+
+            </option>
+
+        @endfor
+
+    </select>
+
+    <button type="submit" class="btn btn-primary">
+        Filter
+    </button>
+
+</form>
 
     {{-- TABLE --}}
     <div class="table-wrapper">
@@ -42,6 +78,7 @@
                 <tr>
                     <th>No</th>
                     <th>Nama Perusahaan</th>
+                    <th>Periode</th>
                     <th>Modal Masuk</th>
                     <th>ROI %</th>
                     <th>Laba / Rugi</th>
@@ -62,6 +99,10 @@
                         <td>
                             {{ $e->company_name }}
                         </td>
+
+<td>
+    {{ \Carbon\Carbon::parse($e->periode)->translatedFormat('F Y') }}
+</td>
 
                         <td>
                             Rp {{ number_format($e->investment_amount, 0, ',', '.') }}
@@ -108,7 +149,7 @@
                 @empty
 
                     <tr>
-                        <td colspan="6" class="text-center">
+                        <td colspan="7" class="text-center">
                             Tidak ada data
                         </td>
                     </tr>

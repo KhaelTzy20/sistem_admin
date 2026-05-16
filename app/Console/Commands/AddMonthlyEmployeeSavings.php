@@ -11,13 +11,14 @@ class AddMonthlyEmployeeSavings extends Command
 {
     protected $signature = 'employee:add-savings';
 
-    protected $description = 'Tambah tabungan otomatis untuk karyawan yang sudah bekerja 6 bulan';
+    protected $description =
+        'Tambah tabungan otomatis untuk karyawan yang sudah bekerja 6 bulan';
 
     public function handle()
     {
         $employees = Employee::where('status', 1)
-        ->where('division_id', '!=', 15)
-        ->get();
+            ->where('division_id', '!=', 15)
+            ->get();
 
         foreach ($employees as $employee) {
 
@@ -25,23 +26,45 @@ class AddMonthlyEmployeeSavings extends Command
                 continue;
             }
 
-            $masaKerja = Carbon::parse($employee->start_work_date)
-                ->diffInMonths(now());
+            $masaKerja = Carbon::parse(
+                $employee->start_work_date
+            )->diffInMonths(now());
 
-            // minimal 6 bulan kerja
-            if ($masaKerja > 6) {
+            // minimal lebih dari 6 bulan kerja
+            if ($masaKerja >= 6) {
 
-                $kinerja = EmployeeKinerja::firstOrCreate(
-                    ['employee_id' => $employee->id],
-                    ['nominal_tabungan' => 500000]
-                );
+                // periode bulan sekarang
+                $periode = now()->startOfMonth();
 
-                $kinerja->increment('nominal_tabungan', 500000);
+                // cek apakah bulan ini sudah ada
+                $existing = EmployeeKinerja::where(
+                        'employee_id',
+                        $employee->id
+                    )
+                    ->whereDate('periode', $periode)
+                    ->first();
 
-                $this->info(
-                    $employee->first_name .
-                    ' tabungan +500000'
-                );
+                // jika belum ada -> create baru
+                if (!$existing) {
+
+                    EmployeeKinerja::create([
+                        'employee_id' => $employee->id,
+                        'nominal_tabungan' => 500000,
+                        'periode' => $periode,
+                    ]);
+
+                    $this->info(
+                        $employee->first_name .
+                        ' tabungan +500000'
+                    );
+
+                } else {
+
+                    $this->info(
+                        $employee->first_name .
+                        ' sudah memiliki periode bulan ini'
+                    );
+                }
             }
         }
 

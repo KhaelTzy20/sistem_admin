@@ -14,7 +14,8 @@ class EmployeeKinerja extends Model
 
     protected $fillable = [
         'employee_id',
-        'nominal_tabungan'
+        'nominal_tabungan',
+        'periode',
     ];
 
     public function employee()
