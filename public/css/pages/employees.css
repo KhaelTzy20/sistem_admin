@@ -213,3 +213,43 @@ input, textarea, select {
     display: inline-block;
     font-size: 14px;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+th, td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+thead th {
+    background: #ef4b3f;
+    color: white;
+    padding: 16px;
+    text-align: center;
+}
+
+tbody td {
+    padding: 14px 16px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+
+th:nth-child(1),
+td:nth-child(1) {
+    text-align: left;
+    padding-left: 20px;
+    width: 60px;
+}
+
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
