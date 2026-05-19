@@ -74,7 +74,7 @@ class Employee extends Model
 
     public function kinerja()
     {
-        return $this->hasOne(EmployeeKinerja::class);
+        return $this->hasMany(EmployeeKinerja::class);
     }
 public function warnings()
 {
@@ -112,7 +112,7 @@ public function warnings()
 
     public function kinerjaRel()
     {
-        return $this->hasOne(\App\Models\EmployeeKinerja::class);
+        return $this->hasMany(\App\Models\EmployeeKinerja::class);
     }
 
     public function warningRel()

@@ -26,8 +26,14 @@ class SummaryController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $allTotalTabungan =
-            EmployeeKinerja::sum('nominal_tabungan');
+        $allTotalTabungan = EmployeeKinerja::whereHas(
+    'employee',
+    function ($q) {
+
+        $q->where('status', 1);
+
+    }
+)->sum('nominal_tabungan');
 
         $allTotalEquity =
             Equity::sum('investment_amount');
@@ -56,10 +62,18 @@ class SummaryController extends Controller
         */
 
         // TABUNGAN BERDASARKAN PERIODE
-        $totalTabungan = EmployeeKinerja::whereMonth('periode', $month)
-            ->whereYear('periode', $year)
-            ->sum('nominal_tabungan');
+        $totalTabungan = EmployeeKinerja::whereHas(
+        'employee',
+        function ($q) {
 
+            $q->where('status', 1);
+
+        }
+    )
+    ->whereMonth('periode', $month)
+    ->whereYear('periode', $year)
+    ->sum('nominal_tabungan');
+    
         // EQUITY BERDASARKAN PERIODE
         $totalEquity = Equity::whereMonth('periode', $month)
             ->whereYear('periode', $year)

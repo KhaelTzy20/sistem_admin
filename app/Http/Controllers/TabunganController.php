@@ -11,86 +11,133 @@ class TabunganController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Employee::where('status', 1)
-    ->where('division_id', '!=', 14)
-    ->where('division_id', '!=', 15)
-    ->with([
-        'kinerjaRel',
-        'warningRel' => function ($q) {
-            $q->where('year', date('Y'));
-        }
-    ]);
+        $query = Employee::withSum(
+                'kinerjaRel as total_tabungan',
+                'nominal_tabungan'
+            )
+            ->with('warningRel')
 
+            ->whereNotIn('division_id', [14, 15])
+
+            ->where(function ($q) {
+
+                // employee aktif
+                $q->where('status', 1)
+
+                // resign tapi masih punya tabungan
+                ->orWhere(function ($sub) {
+
+                    $sub->where('status', 0)
+                        ->whereHas('kinerjaRel', function ($k) {
+
+                            $k->where(
+                                'nominal_tabungan',
+                                '>',
+                                0
+                            );
+
+                        });
+
+                });
+
+            });
+
+        // SEARCH
         if ($request->search) {
+
             $search = strtolower($request->search);
 
             $query->where(function ($q) use ($search) {
-                $q->whereRaw("LOWER(first_name) LIKE ?", ["%$search%"])
-                  ->orWhereRaw("LOWER(last_name) LIKE ?", ["%$search%"]);
+
+                $q->whereRaw(
+                    "LOWER(first_name) LIKE ?",
+                    ["%$search%"]
+                )
+
+                ->orWhereRaw(
+                    "LOWER(last_name) LIKE ?",
+                    ["%$search%"]
+                );
+
             });
         }
 
         $employees = $query->paginate(10);
 
-        return view('employees.tabungan', compact('employees'));
+        return view(
+            'employees.tabungan',
+            compact('employees')
+        );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | EDIT
+    |--------------------------------------------------------------------------
+    */
 
     public function edit($employeeId)
     {
-        $employee = Employee::findOrFail($employeeId);
+        $employee = Employee::with([
+            'kinerjaRel' => function ($q) {
 
-        // 🔥 FIX: pakai nominal_tabungan
-        $kinerja = EmployeeKinerja::firstOrCreate(
-            ['employee_id' => $employeeId],
-            ['nominal_tabungan' => 0]
+                $q->orderBy('periode', 'desc');
+
+            },
+            'warningRel'
+        ])->findOrFail($employeeId);
+
+        return view(
+            'employees.tabungan_edit',
+            compact('employee')
         );
-
-        $warning = EmployeeWarning::firstOrCreate(
-            [
-                'employee_id' => $employeeId,
-                'year' => date('Y')
-            ],
-            [
-                'level' => 0
-            ]
-        );
-
-        return view('employees.tabungan_edit', compact('employee', 'kinerja', 'warning'));
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE PER PERIODE
+    |--------------------------------------------------------------------------
+    */
 
     public function update(Request $request, $employeeId)
-    {
-        $request->validate([
-            'nominal' => 'nullable|numeric',
-            'level' => 'required|integer|min:0|max:4',
-        ]);
+{
+$request->validate([
+'kinerja_id' => 'required',
+'nominal' => 'required|numeric',
+'level' => 'required|integer|min:0|max:4',
+]);
 
-        // 🔥 FIX: pastikan data selalu ada
-        $kinerja = EmployeeKinerja::firstOrCreate(
-            ['employee_id' => $employeeId],
-            ['nominal_tabungan' => 0]
-        );
+// UPDATE TABUNGAN BERDASARKAN PERIODE
+$kinerja = EmployeeKinerja::findOrFail(
+    $request->kinerja_id
+);
 
-        $warning = EmployeeWarning::firstOrCreate(
-            [
-                'employee_id' => $employeeId,
-                'year' => date('Y')
-            ],
-            [
-                'level' => 0
-            ]
-        );
+$kinerja->update([
+    'nominal_tabungan' => $request->nominal
+]);
 
-        // 🔥 FIX UTAMA: mapping ke kolom database
-        $kinerja->update([
-            'nominal_tabungan' => $kinerja->nominal_tabungan + ($request->nominal ?? 0)
-        ]);
+// UPDATE WARNING
+$warning = EmployeeWarning::firstOrCreate(
+    [
+        'employee_id' => $employeeId,
+        'year' => date('Y')
+    ],
+    [
+        'level' => 0
+    ]
+);
 
-        $warning->update([
-            'level' => $request->level
-        ]);
+$warning->update([
+    'level' => $request->level
+]);
 
-        return redirect()->route('employees.tabungan')
-            ->with('success', 'Data berhasil diupdate');
-    }
+return redirect()
+    ->route('employees.tabungan')
+    ->with(
+        'success',
+        'Data berhasil diupdate'
+    );
+
+}
+
 }

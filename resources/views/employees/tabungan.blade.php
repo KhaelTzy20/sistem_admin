@@ -35,6 +35,7 @@
                 <tr>
                     <th>No</th>
                     <th>Nama Karyawan</th>
+                    <th>Status</th>
                     <th>Masa Kerja</th>
                     <th>Surat Peringatan</th>
                     <th>Nominal Tabungan</th>
@@ -51,7 +52,19 @@
                 {{ $e->first_name }} {{ $e->last_name }}
             </td>
 
-            {{-- MASA KERJA --}}
+<td>
+    @if($e->status == 1)
+        <span style="color:green; font-weight:600;">
+            Aktif
+        </span>
+    @else
+        <span style="color:red; font-weight:600;">
+            Resign
+        </span>
+    @endif
+</td>
+
+         {{-- MASA KERJA --}}
             <td>
     @if($e->start_work_date)
 
@@ -94,7 +107,7 @@
 
             {{-- TABUNGAN --}}
             <td>
-                Rp {{ number_format(optional($e->kinerjaRel)->nominal_tabungan ?? 0, 0, ',', '.') }}
+                Rp {{ number_format($e->total_tabungan ?? 0, 0, ',', '.') }}
             </td>
 
             {{-- ACTION --}}

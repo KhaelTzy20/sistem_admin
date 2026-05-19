@@ -18,6 +18,7 @@ class AddMonthlyEmployeeSavings extends Command
     {
         $employees = Employee::where('status', 1)
             ->where('division_id', '!=', 15)
+            ->where('division_id', '!=', 14)
             ->get();
 
         foreach ($employees as $employee) {
@@ -35,6 +36,7 @@ class AddMonthlyEmployeeSavings extends Command
 
                 // periode bulan sekarang
                 $periode = now()->startOfMonth();
+
 
                 // cek apakah bulan ini sudah ada
                 $existing = EmployeeKinerja::where(
