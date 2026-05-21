@@ -76,40 +76,49 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
 {
-$validated = $request->validate([
-'id_number' => 'required',
-'employee_id_number' => 'required',
-'first_name' => 'required',
-'last_name' => 'required',
+    $validated = $request->validate([
 
-    'gender_id' => 'required|exists:genders,id',
-    'place_of_birth' => 'required',
-    'date_of_birth' => 'required|date',
+        'id_number' => 'required',
+        'employee_id_number' => 'required',
 
-    'main_address' => 'required',
-    'alternate_address' => 'nullable',
+        'first_name' => 'required',
+        'last_name' => 'required',
 
-    'email' => 'nullable|email',
-    'corporate_email' => 'nullable|email',
+        'gender_id' => 'required|exists:genders,id',
 
-    'phone_number' => 'nullable',
-    'corporate_phone_number' => 'nullable',
+        'place_of_birth' => 'required',
+        'date_of_birth' => 'required|date',
 
-    'marriage_status_id' => 'required|exists:marriage_status,id',
-    'total_child' => 'required|integer|min:0',
+        'main_address' => 'required',
+        'alternate_address' => 'nullable',
 
-    'division_id' => 'required|exists:divisions,id',
-    'position_id' => 'required|exists:positions,id',
-    'work_status_id' => 'required|exists:work_status,id',
+        'email' => 'nullable|email',
+        'corporate_email' => 'nullable|email',
 
-    'start_work_date' => 'required|date',
-]);
+        'phone_number' => 'nullable',
+        'corporate_phone_number' => 'nullable',
 
-Employee::create($validated);
+        'marriage_status_id' => 'required|exists:marriage_status,id',
 
-return redirect()->route('employees.index')
-    ->with('success', 'Data berhasil ditambahkan');
+        'total_child' => 'required|integer|min:0',
 
+        'division_id' => 'required|exists:divisions,id',
+
+        'position_id' => 'required|exists:positions,id',
+
+        'work_status_id' => 'required|exists:work_status,id',
+
+        'start_work_date' => 'required|date',
+    ]);
+
+    // AUTO AKTIF
+    $validated['status'] = 1;
+
+    Employee::create($validated);
+
+    return redirect()
+        ->route('employees.index')
+        ->with('success', 'Data berhasil ditambahkan');
 }
 
 
