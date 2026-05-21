@@ -75,46 +75,43 @@ class EmployeeController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            // 'id_number' => 'required',
-            // 'employee_id_number' => 'required',
-            // 'first_name' => 'required',
-            // 'last_name' => 'required',
+{
+$validated = $request->validate([
+'id_number' => 'required',
+'employee_id_number' => 'required',
+'first_name' => 'required',
+'last_name' => 'required',
 
-            // 'gender_id' => 'required|exists:genders,id',
-            // 'place_of_birth' => 'required',
-            // 'date_of_birth' => 'required|date',
+    'gender_id' => 'required|exists:genders,id',
+    'place_of_birth' => 'required',
+    'date_of_birth' => 'required|date',
 
-            // 'main_address' => 'required',
-            // 'alternate_address' => 'nullable',
+    'main_address' => 'required',
+    'alternate_address' => 'nullable',
 
-            // 'email' => 'nullable|email',
-            // 'corporate_email' => 'nullable|email',
+    'email' => 'nullable|email',
+    'corporate_email' => 'nullable|email',
 
-            // 'phone_number' => 'nullable',
-            // 'corporate_phone_number' => 'nullable',
+    'phone_number' => 'nullable',
+    'corporate_phone_number' => 'nullable',
 
-            // 'marriage_status_id' => 'required|exists:marriage_status,id',
-            // 'total_child' => 'required|integer|min:0',
+    'marriage_status_id' => 'required|exists:marriage_status,id',
+    'total_child' => 'required|integer|min:0',
 
-            // 'division_id' => 'required|exists:divisions,id',
-            // 'position_id' => 'required|exists:positions,id',
-            // 'work_status_id' => 'required|exists:work_status,id',
+    'division_id' => 'required|exists:divisions,id',
+    'position_id' => 'required|exists:positions,id',
+    'work_status_id' => 'required|exists:work_status,id',
 
-            // 'start_work_date' => 'required|date',
-
-            // 'status' => 'required|in:0,1',
-        ]);
-
-        Employee::create([
-    ...$request->all(),
-    'status' => 1
+    'start_work_date' => 'required|date',
 ]);
 
-        return redirect()->route('employees.index')
-            ->with('success', 'Data berhasil ditambahkan');
-    }
+Employee::create($validated);
+
+return redirect()->route('employees.index')
+    ->with('success', 'Data berhasil ditambahkan');
+
+}
+
 
     public function edit($id)
     {
@@ -136,24 +133,24 @@ class EmployeeController extends Controller
         $employee = Employee::findOrFail($id);
 
         $request->validate([
-            // 'id_number' => 'required',
-            // 'employee_id_number' => 'required',
-            // 'first_name' => 'required',
-            // 'last_name' => 'required',
+            'id_number' => 'required',
+            'employee_id_number' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
 
-            // 'gender_id' => 'required',
-            // 'place_of_birth' => 'required',
-            // 'date_of_birth' => 'required|date',
+            'gender_id' => 'required',
+            'place_of_birth' => 'required',
+            'date_of_birth' => 'required|date',
 
-            // 'main_address' => 'required',
+            'main_address' => 'required',
 
-            // 'division_id' => 'required',
-            // 'position_id' => 'required',
-            // 'work_status_id' => 'required',
+            'division_id' => 'required',
+            'position_id' => 'required',
+            'work_status_id' => 'required',
 
-            // 'start_work_date' => 'required|date',
+            'start_work_date' => 'required|date',
 
-            // 'status' => 'required|in:0,1',
+            'status' => 'required|in:0,1',
         ]);
 
         $employee->update($request->all());

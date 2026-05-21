@@ -97,6 +97,13 @@ Route::get('/employees/{id}/edit', [
 ->name('employees.edit')
 ->middleware('auth');
 
+Route::put('/employees/{id}', [
+EmployeeController::class,
+'update'
+])
+->name('employees.update')
+->middleware('auth');
+
 /*
 |--------------------------------------------------------------------------
 | TABUNGAN
