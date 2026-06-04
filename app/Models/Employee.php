@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-
 use App\Models\Gender;
 use App\Models\Position;
 use App\Models\Division;
 use App\Models\WorkStatus;
 use App\Models\MarriageStatus;
 use App\Models\EmployeeKinerja;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Employee extends Model
 {
@@ -82,9 +81,11 @@ public function warnings()
 }
     // Accessor 
     public function getFullNameAttribute()
-    {
-        return trim($this->first_name . ' ' . $this->last_name);
-    }
+{
+    return Str::title(
+        trim($this->first_name . ' ' . $this->last_name)
+    );
+}
     public function getGenderLabelAttribute()
     {
         return $this->genderRel->name ?? '-';

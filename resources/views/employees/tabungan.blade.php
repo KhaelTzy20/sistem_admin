@@ -49,7 +49,7 @@
             <td>{{ $employees->firstItem() + $i }}</td>
 
             <td>
-                {{ $e->first_name }} {{ $e->last_name }}
+                {{ $e->full_name }}
             </td>
 
 <td>

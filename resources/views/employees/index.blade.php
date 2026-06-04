@@ -52,7 +52,7 @@
                     @foreach ($employees as $i => $e)
                         <tr>
                             <td>{{ $employees->firstItem() + $i }}</td>
-                            <td>{{ $e->first_name }} {{ $e->last_name }}</td>
+                            <td>{{ $e->full_name }}</td>
                             <td>{{ $e->id_number }}</td>
                             <td>{{ $e->divisionRel->name ?? '-' }}</td>
                             <td>{{ $e->workStatusRel->name ?? '-' }}</td>
