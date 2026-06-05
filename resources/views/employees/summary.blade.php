@@ -180,12 +180,6 @@
     {{-- PROFIT SHARING --}}
     {{-- ========================================= --}}
 
-    @php
-        $allowedUsers = ['880', '13'];
-    @endphp
-
-    @if(in_array(auth()->user()->id, $allowedUsers))
-
         <div class="card p-5 mt-5">
 
             <h3 style="font-size:18px; font-weight:600; margin-bottom:15px;">
@@ -241,8 +235,6 @@
             </div>
 
         </div>
-
-    @endif
 
 </div>
 

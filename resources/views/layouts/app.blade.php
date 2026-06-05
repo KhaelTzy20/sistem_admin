@@ -34,8 +34,6 @@ function toggleSubmenu(id) {
         <h2 class="text-xl font-bold mb-8">Admin Panel</h2>
 
         <ul class="space-y-2 text-sm">
-        <!-- @if(in_array(auth()->user()->id, ['880', '13','947
-'])) -->
         <li>
     <button onclick="toggleSubmenu('employeeMenu')"
         class="menu-item w-full flex justify-between items-center {{ request()->is('employees*') ? 'menu-active' : '' }}">
@@ -95,7 +93,6 @@ function toggleSubmenu(id) {
                     Inventaris
                 </a>
             </li>
-            <!-- @endif -->
             <li>
                 <a href="/peminjaman"
                     class="menu-item {{ request()->is('peminjaman*') ? 'menu-active' : '' }}">
