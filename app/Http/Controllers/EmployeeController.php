@@ -143,9 +143,9 @@ class EmployeeController extends Controller
 
         $request->validate([
             'id_number' => 'required',
-            'employee_id_number' => 'required',
+            'employee_id_number' => 'nullable',
             'first_name' => 'required',
-            'last_name' => 'required',
+            'last_name' => 'nullable',
 
             'gender_id' => 'required',
             'place_of_birth' => 'required',
