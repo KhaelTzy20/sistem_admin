@@ -145,7 +145,6 @@ class EmployeeController extends Controller
             
             'first_name' => 'required',
            
-
             'gender_id' => 'required',
             'place_of_birth' => 'required',
             'date_of_birth' => 'required|date',
