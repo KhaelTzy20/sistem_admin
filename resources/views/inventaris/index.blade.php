@@ -56,6 +56,7 @@
                     <tr>
                         <td>{{ $item->code }}</td>
                         <td>{{ $item->name }}</td>
+                        <td> @if($item->item_status_id == 6) Terjual @else {{ $item->employee->full_name ?? '-' }} @endif </td> <td>
                         <td>{{ $item->employee->full_name ?? '-' }}</td>
                         <td>
                             <div class="action-group">

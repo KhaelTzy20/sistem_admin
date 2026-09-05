@@ -40,7 +40,9 @@
                 'Status' => $item->item_status->name ?? '-',
                 'Kategori' => $item->category->name ?? '-',
                 'Catatan' => $item->note ?? '-',
-                'PIC' => $item->employee->full_name ?? '-',
+                'PIC' => $item->item_status_id == 6
+    ? 'Terjual'
+    : ($item->employee->full_name ?? '-'),
                 'Supplier' => $item->supplier->name ?? '-',
                 'Location' => $item->location->name ?? '-',
             ];
