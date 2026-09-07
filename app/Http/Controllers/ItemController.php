@@ -8,36 +8,55 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
-    public function index(Request $request)
+public function index(Request $request)
 {
     $query = Item::query();
 
     if ($request->search) {
-        $search = $request->search;
+        $search = trim($request->search);
 
         $query->where(function ($q) use ($search) {
-            $keywords = explode(' ', strtolower(trim($search)));
 
+            $keywords = explode(' ', strtolower($search));
+
+            // Cari berdasarkan kode barang
             $q->where('code', 'like', '%' . $search . '%')
+
+              // Cari berdasarkan nama barang
               ->orWhere('name', 'like', '%' . $search . '%')
+
+              // Cari berdasarkan nama PIC
               ->orWhereHas('employee', function ($q2) use ($keywords) {
                   foreach ($keywords as $word) {
                       $q2->where(function ($sub) use ($word) {
-                          $sub->whereRaw('LOWER(first_name) LIKE ?', ["%$word%"])
-                              ->orWhereRaw('LOWER(last_name) LIKE ?', ["%$word%"]);
+                          $sub->whereRaw(
+                              'LOWER(first_name) LIKE ?',
+                              ["%$word%"]
+                          )
+                          ->orWhereRaw(
+                              'LOWER(last_name) LIKE ?',
+                              ["%$word%"]
+                          );
                       });
                   }
               });
+
+            // Jika mencari "terjual"
+            if (strtolower($search) === 'terjual') {
+                $q->orWhere('item_status_id', 6);
+            }
         });
     }
 
-    $items = $query->with(['location', 'employee'])
-                   ->orderBy('id')
-                   ->paginate(10);
+    $items = $query->with([
+        'location',
+        'employee'
+    ])
+    ->orderBy('id')
+    ->paginate(10);
 
     return view('inventaris.index', compact('items'));
-
-    }
+}
 
     public function create()
     {
@@ -82,6 +101,11 @@ class ItemController extends Controller
     'item_status_id',
     'supplier_id'
 ]);
+
+// Jika status Terjual (ID 6), PIC otomatis NULL
+if ((int) $data['item_status_id'] === 6) {
+    $data['employee_id'] = null;
+}
 
         // upload foto
         // if ($request->hasFile('photo')) {
@@ -140,7 +164,7 @@ class ItemController extends Controller
             'item_condition_id' => 'required',
             'item_status_id' => 'required',
             'location_id' => 'required',
-            'employee_id' => 'required',
+            'employee_id' => 'nullable',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:10240'
         ]);
 
@@ -162,6 +186,12 @@ class ItemController extends Controller
 
         //     $data['photo'] = $filename;
         // }
+
+        // Jika status Terjual (ID 6), PIC otomatis NULL
+if ((int) $data['item_status_id'] === 6) {
+    $data['employee_id'] = null;
+}
+
 if ($request->hasFile('photo')) {
 
     $file = $request->file('photo');
