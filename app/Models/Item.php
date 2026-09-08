@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Condition;
 use App\Models\Status;
 use App\Models\Supplier;
+use App\Models\ItemPicHistory;
 
 class Item extends Model
 {
@@ -72,5 +73,9 @@ class Item extends Model
     public function supplier()
     {
          return $this->belongsTo(Supplier::class);
+    }
+    public function picHistories()
+    {
+        return $this->hasMany(ItemPicHistory::class, 'item_id');
     }
 }

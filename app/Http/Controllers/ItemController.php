@@ -134,7 +134,7 @@ if ((int) $data['item_status_id'] === 6) {
 
     public function show($id)
     {
-        $item = Item::with(['location', 'employee', 'status'])->findOrFail($id);
+        $item = Item::with(['location', 'employee', 'status', 'picHistories.employee'])->findOrFail($id);
 
         return view('inventaris.show', compact('item'));
     }
@@ -172,6 +172,21 @@ if ((int) $data['item_status_id'] === 6) {
 
         $data = $request->except('photo');
 
+         // Jika status Terjual (ID 6), PIC otomatis NULL
+        if ((int) $data['item_status_id'] === 6) {
+            $data['employee_id'] = null;
+        }
+
+        // Simpan history PIC jika PIC berubah
+        $oldEmployeeId = $item->employee_id;
+        $newEmployeeId = $data['employee_id'] ?? null;
+
+        if ($oldEmployeeId != $newEmployeeId && $oldEmployeeId !== null) {
+            \App\Models\ItemPicHistory::create([
+                'item_id' => $item->id,
+                'employee_id' => $oldEmployeeId,
+            ]);
+        }
         // if ($request->hasFile('photo')) {
 
         //     $file = $request->file('photo');
@@ -186,13 +201,8 @@ if ((int) $data['item_status_id'] === 6) {
 
         //     $data['photo'] = $filename;
         // }
-
-        // Jika status Terjual (ID 6), PIC otomatis NULL
-if ((int) $data['item_status_id'] === 6) {
-    $data['employee_id'] = null;
-}
-
-if ($request->hasFile('photo')) {
+    // Upload foto
+    if ($request->hasFile('photo')) {
 
     $file = $request->file('photo');
     $filename = time() . '_' . $file->getClientOriginalName();
